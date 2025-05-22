@@ -1,4 +1,4 @@
-
+package core;
 
 public class Main {
 
@@ -15,6 +15,7 @@ public class Main {
         MAIN_WINDOW.pack();
 
         MAIN_WINDOW.activate();
+        GAME.start();
 
     }
 }
