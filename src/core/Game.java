@@ -9,6 +9,8 @@ public class Game extends JPanel implements Runnable{
 
     private Thread gameThread;
 
+    private MapConstructor mapConstructor;
+
     public KeyHandler keyHandler;
 
     //entities
@@ -18,6 +20,8 @@ public class Game extends JPanel implements Runnable{
         this.setPreferredSize(new Dimension(Configs.SCREEN_WIDTH, Configs.SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
+
+        mapConstructor = new MapConstructor("res/maps/debug_map_1.zip");
 
         keyHandler = new KeyHandler();
         this.addKeyListener(keyHandler);
@@ -42,6 +46,7 @@ public class Game extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D)g;
 
+        mapConstructor.renderMap(g2);
         player.render(g2);
     }
 

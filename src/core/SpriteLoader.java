@@ -10,7 +10,7 @@ public class SpriteLoader {
 
     static {
         try {
-            PLAYER = ImageIO.read(SpriteLoader.class.getResourceAsStream("/debug_player.png"));
+            PLAYER = ImageIO.read(SpriteLoader.class.getResourceAsStream("/textures/debug_player.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

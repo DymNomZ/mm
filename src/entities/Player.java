@@ -4,7 +4,6 @@ import core.Configs;
 import core.KeyHandler;
 import core.SpriteLoader;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 
 public class Player extends Entity{
