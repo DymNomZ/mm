@@ -10,7 +10,7 @@ public class Player extends Entity{
     private MapConstructor map;
 
     private Rectangle hitbox;
-    private Rectangle reach;
+    public Rectangle reach;
     private int hitboxOffsetX;
     private int hitboxOffsetY;
 
@@ -136,11 +136,11 @@ public class Player extends Entity{
 
     public void render(Graphics2D g2){
 
-//        int rsx = reach.x - x + sx;
-//        int rsy = reach.y - y + sy;
+        int rsx = reach.x - x + sx;
+        int rsy = reach.y - y + sy;
 
         //debug draw reach
-//        g2.drawImage(SpriteLoader.REACH, rsx, rsy, ts, ts, null);
+        g2.drawImage(SpriteLoader.REACH, rsx, rsy, ts, ts, null);
 
         g2.drawImage(sprite, sx, sy, ts, ts, null);
     }

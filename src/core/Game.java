@@ -61,7 +61,7 @@ public class Game extends JPanel implements Runnable{
 
     private void checkCollisions(){
 
-        item.debugTouch(player);
+        item.debugTouch2(player);
     }
 
     @Override
