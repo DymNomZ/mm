@@ -11,7 +11,7 @@ public class MapConstructor {
     Tile tiles[][];
     int mapIndexes[][];
     int mapRows, mapColumns;
-    public int mapHeight, mapWidth;
+    public static int mapHeight, mapWidth;
 
     public MapConstructor(String path){
 
@@ -62,8 +62,8 @@ public class MapConstructor {
         int psx = Game.player.sx;
         int psy = Game.player.sy;
 
-        for(int i = 0; i < mapColumns; i++){
-            for(int j = 0; j < mapRows; j++){
+        for(int i = 0; i < mapRows; i++){
+            for(int j = 0; j < mapColumns; j++){
 
                 wx = i * Configs.TILE_SIZE;
                 wy = j * Configs.TILE_SIZE;
@@ -75,7 +75,7 @@ public class MapConstructor {
                     wy + ts > py - psy && wy - ts < py + psy
                 ){
                     g2.drawImage(
-                            tiles[i][j].image, sx, sy,
+                            tiles[j][i].image, sx, sy,
                             Configs.TILE_SIZE, Configs.TILE_SIZE,
                             null
                     );

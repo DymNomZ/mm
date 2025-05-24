@@ -1,5 +1,6 @@
 package core;
 
+import entities.Item;
 import entities.Player;
 
 import javax.swing.*;
@@ -15,18 +16,21 @@ public class Game extends JPanel implements Runnable{
 
     //entities
     public static Player player;
+    private Item item;
 
     public Game(){
         this.setPreferredSize(new Dimension(Configs.SCREEN_WIDTH, Configs.SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
 
-        mapConstructor = new MapConstructor("res/maps/debug_map_1.zip");
+        mapConstructor = new MapConstructor("res/maps/debug_map_2.zip");
 
         keyHandler = new KeyHandler();
         this.addKeyListener(keyHandler);
 
         player = new Player(keyHandler);
+
+        item = new Item();
 
         this.setFocusable(true);
 
@@ -47,6 +51,9 @@ public class Game extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D)g;
 
         mapConstructor.renderMap(g2);
+
+        item.render(g2);
+
         player.render(g2);
     }
 
