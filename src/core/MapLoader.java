@@ -90,7 +90,7 @@ public class MapLoader {
         BufferedImage tileImage;
         String tileName = image.getName().substring(image.getName().lastIndexOf("$")+1);
 
-        tileImage = ImageIO.read(getClass().getResourceAsStream("/textures/"+ tileName));
+        tileImage = ImageIO.read(getClass().getResourceAsStream("/textures/tiles/"+ tileName));
 
         int tileIndex = tileDataIndexes[currIdx][0];
         boolean solidState = tileDataIndexes[currIdx][1] == 1;
