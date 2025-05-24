@@ -15,6 +15,8 @@ public class MapConstructor {
     int mapRows, mapColumns;
     public static int mapHeight, mapWidth;
 
+    private int ts;
+
     public MapConstructor(String path){
 
         mapLoader = new MapLoader();
@@ -26,8 +28,10 @@ public class MapConstructor {
         mapRows = mapIndexes.length;
         mapColumns = mapIndexes[0].length;
 
-        mapHeight = mapRows * Configs.TILE_SIZE;
-        mapWidth = mapColumns * Configs.TILE_SIZE;
+        ts = Configs.TILE_SIZE;
+
+        mapHeight = mapRows * ts;
+        mapWidth = mapColumns * ts;
 
         loadMapTiles();
     }
@@ -58,7 +62,6 @@ public class MapConstructor {
     public void renderMap(Graphics2D g2){
 
         int wx, wy, sx, sy;
-        int ts = Configs.TILE_SIZE;
         int px = Game.player.x;
         int py = Game.player.y;
         int psx = Game.player.sx;
@@ -67,8 +70,8 @@ public class MapConstructor {
         for(int i = 0; i < mapRows; i++){
             for(int j = 0; j < mapColumns; j++){
 
-                wx = i * Configs.TILE_SIZE;
-                wy = j * Configs.TILE_SIZE;
+                wx = i * ts;
+                wy = j * ts;
                 sx = wx - px + psx;
                 sy = wy - py + psy;
 
@@ -78,8 +81,7 @@ public class MapConstructor {
                 ){
                     g2.drawImage(
                             tiles[j][i].image, sx, sy,
-                            Configs.TILE_SIZE, Configs.TILE_SIZE,
-                            null
+                            ts, ts, null
                     );
                 }
 
@@ -96,8 +98,6 @@ public class MapConstructor {
     }
 
     public boolean isColliding(Rectangle rectangle) {
-
-        int ts = Configs.TILE_SIZE;
 
         // Get the range of tiles the hitbox could potentially overlap with
         // Convert hitbox world coordinates to tile grid coordinates

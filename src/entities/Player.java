@@ -103,10 +103,10 @@ public class Player extends Entity{
 
         if (keyHandler.aPressed && !keyHandler.dPressed) {
             deltaX = -speed;
-            direction = 2;
+            if (deltaY == 0) direction = 2;
         } else if (keyHandler.dPressed && !keyHandler.aPressed) {
             deltaX = speed;
-            direction = 4;
+            if (deltaY == 0) direction = 4;
         }
 
         if (deltaX != 0 || deltaY != 0) {
@@ -119,19 +119,53 @@ public class Player extends Entity{
 
             // Check horizontal collision
             if (deltaX != 0) {
-                hitbox.x = x + hitboxOffsetX + deltaX; // Prospective X
-                hitbox.y = y + hitboxOffsetY;          // Current Y for horizontal check
-                if (!map.isColliding(hitbox)) {
-                    x += deltaX; // Move if no collision
+                int prospectivePlayerX = x + deltaX; // Player's potential new top-left X
+
+                // Calculate prospective hitbox world X
+                int prospectiveHitboxLeft = prospectivePlayerX + hitboxOffsetX;
+                int prospectiveHitboxRight = prospectivePlayerX + hitboxOffsetX + hitbox.width;
+
+                // 1. Check Map Boundaries for X
+                if (prospectiveHitboxLeft >= 0 && prospectiveHitboxRight <= map.mapWidth) {
+                    // Within map X bounds, now check for tile collision
+                    hitbox.x = prospectivePlayerX + hitboxOffsetX; // Update hitbox for tile check
+                    hitbox.y = y + hitboxOffsetY;                  // Current Y for this horizontal check
+                    if (!map.isColliding(hitbox)) {
+                        x = prospectivePlayerX; // Move if no tile collision
+                    }
+                } else {
+                    // Trying to move out of X bounds. Optionally, clamp to edge.
+                    if (deltaX < 0 && prospectiveHitboxLeft < 0) { // Moving left out of bounds
+                        x = -hitboxOffsetX; // Clamp player so hitbox.x is 0
+                    } else if (deltaX > 0 && prospectiveHitboxRight > map.mapWidth) { // Moving right out of bounds
+                        x = map.mapWidth - hitbox.width - hitboxOffsetX; // Clamp player so hitbox.x + hitbox.width is mapWidth
+                    }
                 }
             }
 
             // Check vertical collision
             if (deltaY != 0) {
-                hitbox.x = x + hitboxOffsetX;          // Current X (or updated X if horizontal move was allowed)
-                hitbox.y = y + hitboxOffsetY + deltaY; // Prospective Y
-                if (!map.isColliding(hitbox)) {
-                    y += deltaY; // Move if no collision
+                int prospectivePlayerY = y + deltaY; // Player's potential new top-left Y
+
+                // Calculate prospective hitbox world Y
+                int prospectiveHitboxTop = prospectivePlayerY + hitboxOffsetY;
+                int prospectiveHitboxBottom = prospectivePlayerY + hitboxOffsetY + hitbox.height;
+
+                // 1. Check Map Boundaries for Y
+                if (prospectiveHitboxTop >= 0 && prospectiveHitboxBottom <= map.mapHeight) {
+                    // Within map Y bounds, now check for tile collision
+                    hitbox.x = x + hitboxOffsetX;                  // Current X (or updated X from horizontal move)
+                    hitbox.y = prospectivePlayerY + hitboxOffsetY; // Update hitbox for tile check
+                    if (!map.isColliding(hitbox)) {
+                        y = prospectivePlayerY; // Move if no tile collision
+                    }
+                } else {
+                    // Trying to move out of Y bounds. Optionally, clamp to edge.
+                    if (deltaY < 0 && prospectiveHitboxTop < 0) { // Moving up out of bounds
+                        y = -hitboxOffsetY; // Clamp player so hitbox.y is 0
+                    } else if (deltaY > 0 && prospectiveHitboxBottom > map.mapHeight) { // Moving down out of bounds
+                        y = map.mapHeight - hitbox.height - hitboxOffsetY; // Clamp player so hitbox.y + hitbox.height is mapHeight
+                    }
                 }
             }
         }
