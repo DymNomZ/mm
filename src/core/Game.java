@@ -23,12 +23,12 @@ public class Game extends JPanel implements Runnable{
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
 
-        mapConstructor = new MapConstructor("res/maps/debug_map_2.zip");
+        mapConstructor = new MapConstructor("res/maps/debug_map_3.zip");
 
         keyHandler = new KeyHandler();
         this.addKeyListener(keyHandler);
 
-        player = new Player(keyHandler);
+        player = new Player(keyHandler, mapConstructor);
 
         item = new Item();
 

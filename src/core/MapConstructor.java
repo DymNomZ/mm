@@ -85,4 +85,39 @@ public class MapConstructor {
         }
     }
 
+    public boolean isColliding(Rectangle worldHitbox) {
+
+        int ts = Configs.TILE_SIZE;
+
+        // Get the range of tiles the hitbox could potentially overlap with
+        // Convert hitbox world coordinates to tile grid coordinates
+        int leftTileCol = worldHitbox.x / ts;
+        int rightTileCol = (worldHitbox.x + worldHitbox.width -1) / ts; // -1 to handle edges correctly
+        int topTileRow = worldHitbox.y / ts;
+        int bottomTileRow = (worldHitbox.y + worldHitbox.height -1) / ts; // -1 to handle edges correctly
+
+        for (int row = topTileRow; row <= bottomTileRow; row++) {
+            for (int col = leftTileCol; col <= rightTileCol; col++) {
+                // Boundary checks for the map
+                if (col >= 0 && col < mapColumns && row >= 0 && row < mapRows) {
+                    Tile tile = tiles[row][col]; // Assuming tiles[row][col] is the standard access
+                    // Adjust if your array is tiles[col][row]
+                    if (tile != null && tile.isSolid) {
+                        // Create a Rectangle for the solid tile in world coordinates
+                        Rectangle tileRect = new Rectangle(col * ts, row * ts, ts, ts);
+                        if (worldHitbox.intersects(tileRect)) {
+                            // System.out.println("Collision with solid tile at: " + col + "," + row);
+                            return true; // Collision detected
+                        }
+                    }
+                } else {
+                    // Optional: Treat out-of-bounds as solid if player shouldn't leave map
+                    // System.out.println("Collision with map boundary");
+                    // return true;
+                }
+            }
+        }
+        return false; // No collision
+    }
+
 }
