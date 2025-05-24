@@ -13,6 +13,8 @@ public class Player extends Entity{
     public Player(KeyHandler keyHandler) {
         this.keyHandler = keyHandler;
         this.sprite = SpriteLoader.PLAYER;
+        this.sx = Configs.CENTER_X;
+        this.sy = Configs.CENTER_Y;
         reset();
     }
 
@@ -32,10 +34,13 @@ public class Player extends Entity{
         else if(keyHandler.aPressed) x -= speed;
         else if(keyHandler.dPressed) x += speed;
 
+        //show coordinates here
+
+
     }
 
     public void render(Graphics2D g2){
 
-        g2.drawImage(sprite, x, y, Configs.TILE_SIZE, Configs.TILE_SIZE, null);
+        g2.drawImage(sprite, sx, sy, Configs.TILE_SIZE, Configs.TILE_SIZE, null);
     }
 }

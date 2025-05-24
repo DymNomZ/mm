@@ -14,4 +14,6 @@ public class Configs {
     public static final int SCREEN_ROWS = 12;
     public static final int SCREEN_WIDTH = TILE_SIZE * SCREEN_COLUMNS;
     public static final int SCREEN_HEIGHT = TILE_SIZE * SCREEN_ROWS;
+    public static final int CENTER_X = (Configs.SCREEN_WIDTH / 2) - (Configs.TILE_SIZE / 2);
+    public static final int CENTER_Y = (Configs.SCREEN_HEIGHT / 2) - (Configs.TILE_SIZE / 2);
 }

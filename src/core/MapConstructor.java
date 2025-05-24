@@ -10,7 +10,8 @@ public class MapConstructor {
     ArrayList<Tile> tileData;
     Tile tiles[][];
     int mapIndexes[][];
-    int mapHeight, mapLength;
+    int mapRows, mapColumns;
+    public int mapHeight, mapWidth;
 
     public MapConstructor(String path){
 
@@ -20,30 +21,21 @@ public class MapConstructor {
         tileData = mapLoader.getTiles();
 
         mapIndexes = mapLoader.getMapIndexes();
-        mapHeight = mapIndexes.length;
-        mapLength = mapIndexes[0].length;
+        mapRows = mapIndexes.length;
+        mapColumns = mapIndexes[0].length;
+
+        mapHeight = mapRows * Configs.TILE_SIZE;
+        mapWidth = mapColumns * Configs.TILE_SIZE;
 
         loadMapTiles();
     }
 
-    public int[][] getMapIndexes(){
-        return mapIndexes;
-    }
-
-    public int getMapHeight(){
-        return mapHeight;
-    }
-
-    public int getMapLength(){
-        return mapLength;
-    }
-
     public void loadMapTiles(){
 
-        tiles = new Tile[mapHeight][mapLength];
+        tiles = new Tile[mapRows][mapColumns];
 
-        for(int i = 0; i < mapHeight; i++){
-            for(int j = 0; j < mapLength; j++){
+        for(int i = 0; i < mapRows; i++){
+            for(int j = 0; j < mapColumns; j++){
 
                 //check which tile in tile data matches index
                 if(mapIndexes[i][j] != 0){
@@ -63,15 +55,32 @@ public class MapConstructor {
 
     public void renderMap(Graphics2D g2){
 
-        for(int i = 0; i < mapLength; i++){
-            for(int j = 0; j < mapHeight; j++){
-                g2.drawImage(
-                        tiles[i][j].image,
-                        i * Configs.TILE_SIZE,
-                        j * Configs.TILE_SIZE,
-                        Configs.TILE_SIZE, Configs.TILE_SIZE,
-                        null
-                );
+        int wx, wy, sx, sy;
+        int ts = Configs.TILE_SIZE;
+        int px = Game.player.x;
+        int py = Game.player.y;
+        int psx = Game.player.sx;
+        int psy = Game.player.sy;
+
+        for(int i = 0; i < mapColumns; i++){
+            for(int j = 0; j < mapRows; j++){
+
+                wx = i * Configs.TILE_SIZE;
+                wy = j * Configs.TILE_SIZE;
+                sx = wx - px + psx;
+                sy = wy - py + psy;
+
+                if(
+                    wx + ts > px - psx && wx - ts < px + psx &&
+                    wy + ts > py - psy && wy - ts < py + psy
+                ){
+                    g2.drawImage(
+                            tiles[i][j].image, sx, sy,
+                            Configs.TILE_SIZE, Configs.TILE_SIZE,
+                            null
+                    );
+                }
+
             }
         }
     }

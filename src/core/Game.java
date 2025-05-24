@@ -14,7 +14,7 @@ public class Game extends JPanel implements Runnable{
     public KeyHandler keyHandler;
 
     //entities
-    public Player player;
+    public static Player player;
 
     public Game(){
         this.setPreferredSize(new Dimension(Configs.SCREEN_WIDTH, Configs.SCREEN_HEIGHT));
