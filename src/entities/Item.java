@@ -71,6 +71,12 @@ public class Item extends Entity {
         }
     }
 
+    public void debugDrop(int x, int y) {
+        hide = false;
+        this.x = x;
+        this.y = y;
+    }
+
     public void render(Graphics2D g2){
 
         if(hide) return;

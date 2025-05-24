@@ -16,7 +16,7 @@ public class Game extends JPanel implements Runnable{
 
     //entities
     public static Player player;
-    private Item item;
+    public static Item item;
 
     public Game(){
         this.setPreferredSize(new Dimension(Configs.SCREEN_WIDTH, Configs.SCREEN_HEIGHT));
@@ -45,6 +45,7 @@ public class Game extends JPanel implements Runnable{
 
         player.move();
         player.handleInteractions();
+        player.dropItem();
     }
 
     public void paintComponent(Graphics g){

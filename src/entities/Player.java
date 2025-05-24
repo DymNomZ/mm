@@ -43,6 +43,7 @@ public class Player extends Entity{
 
     private void orientReach(){
 
+        //might extend it a little bit inside the body, but this is alright for now
         switch(direction){
             case 1 -> {
                 reach.x = x;
@@ -78,6 +79,14 @@ public class Player extends Entity{
         if(map.isColliding(reach)){
             //room for creativity!
         }
+    }
+
+    public void dropItem(){
+
+        if(!keyHandler.qPressed) return;
+
+        //to be changes to actual drop implementation
+        Game.item.debugDrop(x, y);
     }
 
     public void move() {
