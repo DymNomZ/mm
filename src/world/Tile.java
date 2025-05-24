@@ -1,4 +1,4 @@
-package core;
+package world;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

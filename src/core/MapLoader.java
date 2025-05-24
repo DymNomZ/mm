@@ -1,5 +1,7 @@
 package core;
 
+import world.Tile;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;

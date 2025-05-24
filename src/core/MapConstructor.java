@@ -1,5 +1,7 @@
 package core;
 
+import world.Tile;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -85,16 +87,24 @@ public class MapConstructor {
         }
     }
 
-    public boolean isColliding(Rectangle worldHitbox) {
+    private void updateTile(int row, int col){
+
+        //other implementations here
+
+        //doors
+        if(Game.keyHandler.fPressed) tiles[row][col] = Tools.openDoor;
+    }
+
+    public boolean isColliding(Rectangle rectangle) {
 
         int ts = Configs.TILE_SIZE;
 
         // Get the range of tiles the hitbox could potentially overlap with
         // Convert hitbox world coordinates to tile grid coordinates
-        int leftTileCol = worldHitbox.x / ts;
-        int rightTileCol = (worldHitbox.x + worldHitbox.width -1) / ts; // -1 to handle edges correctly
-        int topTileRow = worldHitbox.y / ts;
-        int bottomTileRow = (worldHitbox.y + worldHitbox.height -1) / ts; // -1 to handle edges correctly
+        int leftTileCol = rectangle.x / ts;
+        int rightTileCol = (rectangle.x + rectangle.width -1) / ts; // -1 to handle edges correctly
+        int topTileRow = rectangle.y / ts;
+        int bottomTileRow = (rectangle.y + rectangle.height -1) / ts; // -1 to handle edges correctly
 
         for (int row = topTileRow; row <= bottomTileRow; row++) {
             for (int col = leftTileCol; col <= rightTileCol; col++) {
@@ -105,8 +115,12 @@ public class MapConstructor {
                     if (tile != null && tile.isSolid) {
                         // Create a Rectangle for the solid tile in world coordinates
                         Rectangle tileRect = new Rectangle(col * ts, row * ts, ts, ts);
-                        if (worldHitbox.intersects(tileRect)) {
+                        if (rectangle.intersects(tileRect)) {
                             // System.out.println("Collision with solid tile at: " + col + "," + row);
+
+                            //Tiles that depend on collision (ie. doors)
+                            updateTile(row, col);
+
                             return true; // Collision detected
                         }
                     }

@@ -10,9 +10,9 @@ public class Game extends JPanel implements Runnable{
 
     private Thread gameThread;
 
-    private MapConstructor mapConstructor;
+    public static MapConstructor mapConstructor;
 
-    public KeyHandler keyHandler;
+    public static KeyHandler keyHandler;
 
     //entities
     public static Player player;
@@ -23,12 +23,12 @@ public class Game extends JPanel implements Runnable{
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
 
-        mapConstructor = new MapConstructor("res/maps/debug_map_3.zip");
-
         keyHandler = new KeyHandler();
         this.addKeyListener(keyHandler);
 
-        player = new Player(keyHandler, mapConstructor);
+        mapConstructor = new MapConstructor("res/maps/debug_map_3.zip");
+
+        player = new Player();
 
         item = new Item();
 
@@ -44,6 +44,7 @@ public class Game extends JPanel implements Runnable{
     private void update(){
 
         player.move();
+        player.handleInteractions();
     }
 
     public void paintComponent(Graphics g){
