@@ -19,6 +19,7 @@ public class Player extends Entity{
     private int h = Configs.HALF;
     private int q = Configs.QUARTER;
     private int d = Configs.DOUBLE;
+    private int trd = Configs.THIRD;
     private int pw = ts;
     private int ph = d;
 
@@ -33,7 +34,7 @@ public class Player extends Entity{
     public Player() {
         this.keyHandler = Game.keyHandler;
         this.map = Game.mapConstructor;
-        this.hitbox = new Rectangle(0, 0, h, h);
+        this.hitbox = new Rectangle(0, 0, h, trd);
         this.hitboxOffsetX = q;
         this.hitboxOffsetY = q;
         this.reach = new Rectangle(0, 0, h, h);
@@ -256,8 +257,17 @@ public class Player extends Entity{
         int rsy = reach.y - y + sy;
 
         //debug draw reach
-        g2.drawImage(SpriteLoader.REACH, rsx, rsy, ts, ts, null);
+        g2.setColor(Color.GREEN);
+        g2.drawRect(rsx, rsy, ts, ts);
+        g2.fillRect(rsx, rsy, ts, ts);
 
         g2.drawImage(sprite, sx, sy, pw, ph, null);
+
+        int hsx = Configs.CENTER_X + hitboxOffsetX;
+        int hsy = Configs.CENTER_Y + hitboxOffsetY;
+
+        //debug draw hitbox
+        g2.setColor(Color.WHITE);
+        g2.drawRect(hsx, hsy, hitbox.width, hitbox.height);
     }
 }

@@ -57,12 +57,10 @@ public class SpriteLoader {
     }
 
     public static BufferedImage DEBUG_PLAYER;
-    public static BufferedImage REACH;
 
     static {
         try {
             DEBUG_PLAYER = ImageIO.read(SpriteLoader.class.getResourceAsStream("/textures/player/debug_player.png"));
-            REACH = ImageIO.read(SpriteLoader.class.getResourceAsStream("/textures/player/debug_reach.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
