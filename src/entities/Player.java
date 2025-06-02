@@ -17,6 +17,9 @@ public class Player extends Entity{
     private int ts = Configs.TILE_SIZE;
     private int h = Configs.HALF;
     private int q = Configs.QUARTER;
+    private int d = Configs.DOUBLE;
+    private int pw = ts;
+    private int ph = d;
 
     private int direction; //1 up 2 left 3 down 4 right
 
@@ -27,7 +30,6 @@ public class Player extends Entity{
         this.hitboxOffsetX = q;
         this.hitboxOffsetY = q;
         this.reach = new Rectangle(0, 0, h, h);
-        this.sprite = SpriteLoader.PLAYER;
         this.sx = Configs.CENTER_X;
         this.sy = Configs.CENTER_Y;
         reset();
@@ -38,6 +40,7 @@ public class Player extends Entity{
         y = 100;
         speed = 8;
         direction = 3;
+        updateSprite();
         orientReach();
     }
 
@@ -68,6 +71,24 @@ public class Player extends Entity{
                 reach.width = h;
                 reach.y = y;
                 reach.height = ts;
+            }
+        }
+    }
+
+    private void updateSprite(){
+
+        switch(direction){
+            case 1 -> {
+                this.sprite = SpriteLoader.PLAYER_UP_IDLE_FRAMES[0];
+            }
+            case 2 -> {
+                this.sprite = SpriteLoader.PLAYER_LEFT_IDLE_FRAMES[0];
+            }
+            case 3 -> {
+                this.sprite = SpriteLoader.PLAYER_DOWN_IDLE_FRAMES[0];
+            }
+            case 4 -> {
+                this.sprite = SpriteLoader.PLAYER_RIGHT_IDLE_FRAMES[0];
             }
         }
     }
@@ -108,6 +129,8 @@ public class Player extends Entity{
             deltaX = speed;
             if (deltaY == 0) direction = 4;
         }
+
+        updateSprite();
 
         if (deltaX != 0 || deltaY != 0) {
 
@@ -185,6 +208,6 @@ public class Player extends Entity{
         //debug draw reach
         g2.drawImage(SpriteLoader.REACH, rsx, rsy, ts, ts, null);
 
-        g2.drawImage(sprite, sx, sy, ts, ts, null);
+        g2.drawImage(sprite, sx, sy, pw, ph, null);
     }
 }

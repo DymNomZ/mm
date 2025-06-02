@@ -18,4 +18,5 @@ public class Configs {
     public static final int CENTER_Y = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
     public static final int HALF = TILE_SIZE / 2;
     public static final int QUARTER = TILE_SIZE / 4;
+    public static final int DOUBLE = TILE_SIZE * 2;
 }
