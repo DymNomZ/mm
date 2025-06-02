@@ -3,6 +3,7 @@ package entities;
 import core.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Player extends Entity{
 
@@ -22,6 +23,12 @@ public class Player extends Entity{
     private int ph = d;
 
     private int direction; //1 up 2 left 3 down 4 right
+
+    private boolean isMoving;
+
+    private int animationTick = 0;
+    private int animationSpeed = 10;
+    private int currentFrameIndex = 0;
 
     public Player() {
         this.keyHandler = Game.keyHandler;
@@ -57,39 +64,71 @@ public class Player extends Entity{
             case 2 -> {
                 reach.x = x - h;
                 reach.width = h;
-                reach.y = y;
+                reach.y = y + ts;
                 reach.height = ts;
             }
             case 3 -> {
                 reach.x = x;
                 reach.width = ts;
-                reach.y = y + ts;
+                reach.y = y + d;
                 reach.height = h;
             }
             case 4 -> {
                 reach.x = x + ts;
                 reach.width = h;
-                reach.y = y;
+                reach.y = y + ts;
                 reach.height = ts;
             }
         }
     }
 
-    private void updateSprite(){
+    private void updateSprite() {
+        BufferedImage[] currentFrames = null;
+        int frameLimit = 0;
 
-        switch(direction){
-            case 1 -> {
-                this.sprite = SpriteLoader.PLAYER_UP_IDLE_FRAMES[0];
+        if (isMoving) {
+            frameLimit = SpriteLoader.WALKING_LIMIT;
+            switch (direction) {
+                case 1 -> currentFrames = SpriteLoader.PLAYER_UP_WALKING_FRAMES;
+                case 2 -> currentFrames = SpriteLoader.PLAYER_LEFT_WALKING_FRAMES;
+                case 3 -> currentFrames = SpriteLoader.PLAYER_DOWN_WALKING_FRAMES;
+                case 4 -> currentFrames = SpriteLoader.PLAYER_RIGHT_WALKING_FRAMES;
+                default -> {
+                    currentFrames = SpriteLoader.PLAYER_DOWN_IDLE_FRAMES;
+                    frameLimit = SpriteLoader.IDLE_LIMIT;
+                }
             }
-            case 2 -> {
-                this.sprite = SpriteLoader.PLAYER_LEFT_IDLE_FRAMES[0];
+        } else {
+            frameLimit = SpriteLoader.IDLE_LIMIT;
+            switch (direction) {
+                case 1 -> currentFrames = SpriteLoader.PLAYER_UP_IDLE_FRAMES;
+                case 2 -> currentFrames = SpriteLoader.PLAYER_LEFT_IDLE_FRAMES;
+                case 3 -> currentFrames = SpriteLoader.PLAYER_DOWN_IDLE_FRAMES;
+                case 4 -> currentFrames = SpriteLoader.PLAYER_RIGHT_IDLE_FRAMES;
+                default -> currentFrames = SpriteLoader.PLAYER_DOWN_IDLE_FRAMES;
             }
-            case 3 -> {
-                this.sprite = SpriteLoader.PLAYER_DOWN_IDLE_FRAMES[0];
+        }
+
+        animationTick++;
+        if (animationTick >= animationSpeed) {
+            animationTick = 0;
+            currentFrameIndex++;
+            if (currentFrameIndex >= frameLimit) {
+                currentFrameIndex = 0;
             }
-            case 4 -> {
-                this.sprite = SpriteLoader.PLAYER_RIGHT_IDLE_FRAMES[0];
+        }
+
+        if (currentFrames != null && currentFrames.length > 0) {
+            // Ensure currentFrameIndex is valid, especially if frameLimit somehow became 0
+            if (currentFrameIndex < frameLimit) {
+                this.sprite = currentFrames[currentFrameIndex];
+            } else {
+                this.sprite = currentFrames[0]; // Fallback if index is out of bounds
+                currentFrameIndex = 0; // Reset index
             }
+        } else if (SpriteLoader.PLAYER_DOWN_IDLE_FRAMES.length > 0) {
+            // Fallback if something went very wrong with currentFrames selection
+            this.sprite = SpriteLoader.PLAYER_DOWN_IDLE_FRAMES[0];
         }
     }
 
@@ -113,6 +152,7 @@ public class Player extends Entity{
     public void move() {
         int deltaX = 0;
         int deltaY = 0;
+        int previousDirection = this.direction;
 
         if (keyHandler.wPressed && !keyHandler.sPressed) {
             deltaY = -speed;
@@ -130,9 +170,17 @@ public class Player extends Entity{
             if (deltaY == 0) direction = 4;
         }
 
-        updateSprite();
+        // If not moving, player might still change facing direction if they just tapped a key
+        // but currentFrameIndex should reset if they *stop* moving into a new direction
+        isMoving = deltaX != 0 || deltaY != 0;
 
-        if (deltaX != 0 || deltaY != 0) {
+        // Reset animation frame if direction changes OR if movement stops/starts
+        if (direction != previousDirection || (isMoving && currentFrameIndex == 0 && animationTick == 0 && deltaX == 0 && deltaY == 0)) {
+            currentFrameIndex = 0;
+            animationTick = 0;
+        }
+
+        if (isMoving) {
 
             //trigger switching of player's reach
             orientReach();
@@ -195,6 +243,8 @@ public class Player extends Entity{
         // Final update of hitbox to current player world position (for rendering or other checks)
         hitbox.x = x + hitboxOffsetX;
         hitbox.y = y + hitboxOffsetY;
+
+        updateSprite();
 
         // System.out.println("Player World X: " + x + ", World Y: " + y);
         // System.out.println("Hitbox World X: " + hitbox.x + ", World Y: " + hitbox.y);
