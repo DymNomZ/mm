@@ -20,8 +20,6 @@ public class Player extends Entity{
     private int q = Configs.QUARTER;
     private int d = Configs.DOUBLE;
     private int trd = Configs.THIRD;
-    private int pw = ts;
-    private int ph = d;
 
     private int direction; //1 up 2 left 3 down 4 right
 
@@ -34,6 +32,8 @@ public class Player extends Entity{
     public Player() {
         this.keyHandler = Game.keyHandler;
         this.map = Game.mapConstructor;
+        this.ewidth = ts;
+        this.eheight = d;
         this.hitbox = new Rectangle(0, 0, h, trd);
         this.hitboxOffsetX = q;
         this.hitboxOffsetY = q;
@@ -52,34 +52,50 @@ public class Player extends Entity{
         orientReach();
     }
 
-    private void orientReach(){
+    private void orientReach() {
 
-        //might extend it a little bit inside the body, but this is alright for now
-        switch(direction){
-            case 1 -> {
-                reach.x = x;
-                reach.width = ts;
-                reach.y = y - h;
-                reach.height = h;
-            }
-            case 2 -> {
-                reach.x = x - h;
-                reach.width = h;
-                reach.y = y + ts;
-                reach.height = ts;
-            }
-            case 3 -> {
-                reach.x = x;
-                reach.width = ts;
-                reach.y = y + d;
-                reach.height = h;
-            }
-            case 4 -> {
-                reach.x = x + ts;
-                reach.width = h;
-                reach.y = y + ts;
-                reach.height = ts;
-            }
+        // reach dimensions, width and depth or how far
+        int rw = ts;
+        int rd = ts;
+
+        //gap between player and actual reach
+        int reachOffset = -h;
+
+        // Calculate the center of the player using its world coordinates and dimensions
+        double playerCenterX = x + (double) ewidth / 2.0;
+        double playerCenterY = y + (double) eheight / 2.0;
+
+        switch (direction) {
+            case 1:
+                reach.width = rw;
+                reach.height = rd;
+                reach.x = (int) (playerCenterX - (double)reach.width / 2.0); // Center reach horizontally with player
+                reach.y = (int) (y - reach.height - reachOffset); // Position above player's top edge
+                break;
+            case 2:
+                reach.width = rd;
+                reach.height = rw;
+                reach.x = (int) (x - reach.width - reachOffset); // Position left of player's left edge
+                reach.y = (int) (playerCenterY - (double)reach.height / 2.0); // Center reach vertically with player
+                break;
+            case 3:
+                reach.width = rw;
+                reach.height = rd;
+                reach.x = (int) (playerCenterX - (double)reach.width / 2.0);
+                reach.y = (int) (y + eheight + reachOffset);
+                break;
+            case 4:
+                reach.width = rd;
+                reach.height = rw;
+                reach.x = (int) (x + ewidth + reachOffset);
+                reach.y = (int) (playerCenterY - (double)reach.height / 2.0);
+                break;
+            default: // Fallback
+                reach.x = (int)this.x;
+                reach.y = (int)this.y;
+                reach.width = 0;
+                reach.height = 0;
+                break;
         }
     }
 
@@ -122,14 +138,14 @@ public class Player extends Entity{
         if (currentFrames != null && currentFrames.length > 0) {
             // Ensure currentFrameIndex is valid, especially if frameLimit somehow became 0
             if (currentFrameIndex < frameLimit) {
-                this.sprite = currentFrames[currentFrameIndex];
+                sprite = currentFrames[currentFrameIndex];
             } else {
-                this.sprite = currentFrames[0]; // Fallback if index is out of bounds
+                sprite = currentFrames[0]; // Fallback if index is out of bounds
                 currentFrameIndex = 0; // Reset index
             }
         } else if (SpriteLoader.PLAYER_DOWN_IDLE_FRAMES.length > 0) {
             // Fallback if something went very wrong with currentFrames selection
-            this.sprite = SpriteLoader.PLAYER_DOWN_IDLE_FRAMES[0];
+            sprite = SpriteLoader.PLAYER_DOWN_IDLE_FRAMES[0];
         }
     }
 
@@ -147,103 +163,106 @@ public class Player extends Entity{
         if(!keyHandler.qPressed) return;
 
         //to be changes to actual drop implementation
-        Game.item.debugDrop(x, y);
+        Game.item.debugDrop((int)x, (int)y);
     }
 
     public void move() {
-        int deltaX = 0;
-        int deltaY = 0;
+        double moveX = 0;
+        double moveY = 0;
         int previousDirection = this.direction;
 
+        // Determine input direction
         if (keyHandler.wPressed && !keyHandler.sPressed) {
-            deltaY = -speed;
-            direction = 1;
+            moveY = -1;
         } else if (keyHandler.sPressed && !keyHandler.wPressed) {
-            deltaY = speed;
-            direction = 3;
+            moveY = 1;
         }
 
         if (keyHandler.aPressed && !keyHandler.dPressed) {
-            deltaX = -speed;
-            if (deltaY == 0) direction = 2;
+            moveX = -1;
         } else if (keyHandler.dPressed && !keyHandler.aPressed) {
-            deltaX = speed;
-            if (deltaY == 0) direction = 4;
+            moveX = 1;
         }
 
-        // If not moving, player might still change facing direction if they just tapped a key
-        // but currentFrameIndex should reset if they *stop* moving into a new direction
-        isMoving = deltaX != 0 || deltaY != 0;
+        if (moveY < 0) direction = 1;
+        else if (moveY > 0) direction = 3;
+        if (moveX < 0 && (moveY == 0 || !keyHandler.wPressed && !keyHandler.sPressed)) direction = 2;
+        else if (moveX > 0 && (moveY == 0 || !keyHandler.wPressed && !keyHandler.sPressed)) direction = 4;
+
+        //Normalize the movement vector if moving diagonally
+        if (moveX != 0 && moveY != 0) {
+            double length = Math.sqrt(moveX * moveX + moveY * moveY);
+            moveX = (moveX / length);
+            moveY = (moveY / length);
+        }
+
+        double actualDeltaX = moveX * speed;
+        double actualDeltaY = moveY * speed;
+
+        //for animation
+        if (actualDeltaX != 0 || actualDeltaY != 0) {
+            isMoving = true;
+        } else {
+            isMoving = false;
+        }
 
         // Reset animation frame if direction changes OR if movement stops/starts
-        if (direction != previousDirection || (isMoving && currentFrameIndex == 0 && animationTick == 0 && deltaX == 0 && deltaY == 0)) {
+        if (direction != previousDirection || (isMoving && currentFrameIndex == 0 && animationTick == 0 && moveX == 0 && moveY == 0)) {
             currentFrameIndex = 0;
             animationTick = 0;
         }
 
         if (isMoving) {
 
-            //trigger switching of player's reach
             orientReach();
 
-            // Update hitbox's world position BEFORE checking collision
-            // This reflects where the hitbox WILL BE if movement is allowed
-
             // Check horizontal collision
-            if (deltaX != 0) {
-                int prospectivePlayerX = x + deltaX; // Player's potential new top-left X
+            if (isMoving) {
+                orientReach();
 
-                // Calculate prospective hitbox world X
-                int prospectiveHitboxLeft = prospectivePlayerX + hitboxOffsetX;
-                int prospectiveHitboxRight = prospectivePlayerX + hitboxOffsetX + hitbox.width;
+                // Check horizontal collision
+                if (actualDeltaX != 0) {
+                    // Prospective player world X (double)
+                    double prospectivePlayerWorldX = x + actualDeltaX;
 
-                // 1. Check Map Boundaries for X
-                if (prospectiveHitboxLeft >= 0 && prospectiveHitboxRight <= map.mapWidth) {
-                    // Within map X bounds, now check for tile collision
-                    hitbox.x = prospectivePlayerX + hitboxOffsetX; // Update hitbox for tile check
-                    hitbox.y = y + hitboxOffsetY;                  // Current Y for this horizontal check
-                    if (!map.isColliding(hitbox)) {
-                        x = prospectivePlayerX; // Move if no tile collision
-                    }
-                } else {
-                    // Trying to move out of X bounds. Optionally, clamp to edge.
-                    if (deltaX < 0 && prospectiveHitboxLeft < 0) { // Moving left out of bounds
-                        x = -hitboxOffsetX; // Clamp player so hitbox.x is 0
-                    } else if (deltaX > 0 && prospectiveHitboxRight > map.mapWidth) { // Moving right out of bounds
-                        x = map.mapWidth - hitbox.width - hitboxOffsetX; // Clamp player so hitbox.x + hitbox.width is mapWidth
+                    // Update hitbox for collision check (using integer casting for simplicity with current rect)
+                    // For more precision, hitbox could also use doubles, or collision check could handle doubles.
+                    hitbox.x = (int) (prospectivePlayerWorldX + hitboxOffsetX);
+                    hitbox.y = (int) (y + hitboxOffsetY); // Current Y for horizontal check
+
+                    if (prospectivePlayerWorldX + hitboxOffsetX >= 0 &&
+                            prospectivePlayerWorldX + hitboxOffsetX + hitbox.width <= map.mapWidth) {
+                        if (!map.isColliding(hitbox)) {
+                            x = prospectivePlayerWorldX; // Apply double movement
+                        }
+                    } else { // Clamp to map boundaries
+                        if (actualDeltaX < 0) x = -hitboxOffsetX;
+                        else x = map.mapWidth - hitbox.width - hitboxOffsetX;
                     }
                 }
-            }
 
-            // Check vertical collision
-            if (deltaY != 0) {
-                int prospectivePlayerY = y + deltaY; // Player's potential new top-left Y
+                // Check vertical collision
+                if (actualDeltaY != 0) {
+                    double prospectivePlayerWorldY = y + actualDeltaY;
 
-                // Calculate prospective hitbox world Y
-                int prospectiveHitboxTop = prospectivePlayerY + hitboxOffsetY;
-                int prospectiveHitboxBottom = prospectivePlayerY + hitboxOffsetY + hitbox.height;
+                    hitbox.x = (int) (x + hitboxOffsetX); // Current X (or updated X)
+                    hitbox.y = (int) (prospectivePlayerWorldY + hitboxOffsetY);
 
-                // 1. Check Map Boundaries for Y
-                if (prospectiveHitboxTop >= 0 && prospectiveHitboxBottom <= map.mapHeight) {
-                    // Within map Y bounds, now check for tile collision
-                    hitbox.x = x + hitboxOffsetX;                  // Current X (or updated X from horizontal move)
-                    hitbox.y = prospectivePlayerY + hitboxOffsetY; // Update hitbox for tile check
-                    if (!map.isColliding(hitbox)) {
-                        y = prospectivePlayerY; // Move if no tile collision
-                    }
-                } else {
-                    // Trying to move out of Y bounds. Optionally, clamp to edge.
-                    if (deltaY < 0 && prospectiveHitboxTop < 0) { // Moving up out of bounds
-                        y = -hitboxOffsetY; // Clamp player so hitbox.y is 0
-                    } else if (deltaY > 0 && prospectiveHitboxBottom > map.mapHeight) { // Moving down out of bounds
-                        y = map.mapHeight - hitbox.height - hitboxOffsetY; // Clamp player so hitbox.y + hitbox.height is mapHeight
+                    if (prospectivePlayerWorldY + hitboxOffsetY >= 0 &&
+                            prospectivePlayerWorldY + hitboxOffsetY + hitbox.height <= map.mapHeight) {
+                        if (!map.isColliding(hitbox)) {
+                            y = prospectivePlayerWorldY; // Apply double movement
+                        }
+                    } else { // Clamp to map boundaries
+                        if (actualDeltaY < 0) y = -hitboxOffsetY;
+                        else y = map.mapHeight - hitbox.height - hitboxOffsetY;
                     }
                 }
             }
         }
         // Final update of hitbox to current player world position (for rendering or other checks)
-        hitbox.x = x + hitboxOffsetX;
-        hitbox.y = y + hitboxOffsetY;
+        hitbox.x = (int) (x + hitboxOffsetX);
+        hitbox.y = (int) (y + hitboxOffsetY);
 
         updateSprite();
 
@@ -253,21 +272,23 @@ public class Player extends Entity{
 
     public void render(Graphics2D g2){
 
-        int rsx = reach.x - x + sx;
-        int rsy = reach.y - y + sy;
-
         //debug draw reach
-        g2.setColor(Color.GREEN);
-        g2.drawRect(rsx, rsy, ts, ts);
-        g2.fillRect(rsx, rsy, ts, ts);
+        if (this.reach != null) {
+            int reachScreenX = this.reach.x - (int)x + sx;
+            int reachScreenY = this.reach.y - (int)y + sy;
 
-        g2.drawImage(sprite, sx, sy, pw, ph, null);
+            g2.setColor(Color.GREEN);
+            g2.drawRect(reachScreenX, reachScreenY, this.reach.width, this.reach.height);
+        }
 
-        int hsx = Configs.CENTER_X + hitboxOffsetX;
-        int hsy = Configs.CENTER_Y + hitboxOffsetY;
+
+        g2.drawImage(sprite, sx, sy, ewidth, eheight, null);
 
         //debug draw hitbox
+        int hitboxScreenX = hitbox.x - (int)x + sx;
+        int hitboxScreenY = hitbox.y - (int)y + sy;
+
         g2.setColor(Color.WHITE);
-        g2.drawRect(hsx, hsy, hitbox.width, hitbox.height);
+        g2.drawRect(hitboxScreenX, hitboxScreenY, hitbox.width, hitbox.height);
     }
 }

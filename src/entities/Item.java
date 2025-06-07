@@ -21,6 +21,12 @@ public class Item extends Entity {
         this.ts = Configs.TILE_SIZE;
     }
 
+    public void debugDrop(int x, int y) {
+        hide = false;
+        this.x = x;
+        this.y = y;
+    }
+
     public boolean isTouch(
             int il, int ir, int it, int ib,
             int pl, int pr, int pt, int pb
@@ -29,76 +35,51 @@ public class Item extends Entity {
         return !(pl >= ir || pr <= il || pt >= ib || pb <= it);
     }
 
-    private void debugRelocate(){
-        x = Tools.getRandomX();
-        y = Tools.getRandomY();
-    }
+    public void itemTouch(Player p){
 
-    public void debugTouch(Player p){
+        int itemSize = ts; //for now
 
-        int il = this.x;
-        int ir = this.x + ts;
-        int it = this.y;
-        int ib = this.y + ts;
-
-        int pl = p.x;
-        int pr = p.x + ts;
-        int pt = p.y;
-        int pb = p.y + ts;
-
-        if(isTouch(il, ir, it, ib, pl, pr, pt, pb)){
-            debugRelocate();
-        }
-    }
-
-    public void debugTouch2(Player p){
-
-        int il = this.x;
-        int ir = this.x + ts;
-        int it = this.y;
-        int ib = this.y + ts;
+        int il = (int)x;
+        int ir = (int)(x + itemSize);
+        int it = (int)y;
+        int ib = (int)(y + itemSize);
 
         int pl = p.reach.x;
-        int pr = pl + p.reach.width;
+        int pr = p.reach.x + p.reach.width;
         int pt = p.reach.y;
-        int pb = pt + p.reach.height;
+        int pb = p.reach.y + p.reach.height;
 
         if(
-            keyHandler.fPressed &&
+            keyHandler.ePressed &&
             isTouch(il, ir, it, ib, pl, pr, pt, pb)
         ){
             hide = true;
         }
     }
 
-    public void debugDrop(int x, int y) {
-        hide = false;
-        this.x = x;
-        this.y = y;
-    }
+    public void render(Graphics2D g2) {
 
-    public void render(Graphics2D g2){
-
-        if(hide) return;
+        if (hide) return;
 
         int ts = Configs.TILE_SIZE;
-        int px = Game.player.x;
-        int py = Game.player.y;
+
+        int px = (int) Game.player.x;
+        int py = (int) Game.player.y;
         int psx = Game.player.sx;
         int psy = Game.player.sy;
 
-        sx = x - px + psx;
-        sy = y - py + psy;
+        this.sx = (int) (x - px + psx);
+        this.sy = (int) (y - py + psy);
 
-        if(
-                x + ts > px - psx && x - ts < px + psx &&
-                y + ts > py - psy && y - ts < py + psy
-        ){
-            g2.drawImage(
-                    sprite, sx, sy,
-                    Configs.TILE_SIZE, Configs.TILE_SIZE,
-                    null
-            );
+        boolean isHorizontallyVisible = (x + ts > px - psx) && (x < px - psx + Configs.SCREEN_WIDTH);
+        boolean isVerticallyVisible = (y + ts > py - psy) && (y < py - psy + Configs.SCREEN_HEIGHT);
+
+        if (isHorizontallyVisible && isVerticallyVisible) {
+            g2.drawImage(sprite, sx, sy, ts, ts, null);
+
+            //Debug draw item's bounding box on screen
+            g2.setColor(Color.ORANGE);
+            g2.drawRect(sx, sy, ts, ts);
         }
     }
 }

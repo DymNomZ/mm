@@ -14,14 +14,20 @@ public class MouseHandler implements MouseListener {
 
     private void handleMouseClick(int screenX, int screenY) {
 
-        int worldMouseX = Game.player.x - Game.player.sx + screenX;
-        int worldMouseY = Game.player.y - Game.player.sy + screenY;
+        int px = (int) Game.player.x;
+        int py = (int) Game.player.y;
+        int psx = Game.player.sx;
+        int psy = Game.player.sy;
 
-        int tileCol = worldMouseX / Configs.TILE_SIZE;
-        int tileRow = worldMouseY / Configs.TILE_SIZE;
+        int mx = px - psx + screenX;
+        int my = py - psy + screenY;
+
+        int ts = Configs.TILE_SIZE;
+        int tileCol = mx / ts;
+        int tileRow = my / ts;
 
         System.out.println("Screen Click: (" + screenX + ", " + screenY + ")");
-        System.out.println("World Coords: (" + worldMouseX + ", " + worldMouseY + ")");
+        System.out.println("World Coords: (" + mx + ", " + my + ") -- Calculated using player world (int): (" + px + ", " + py + ")");
         System.out.println("Clicked Tile Coords (Col, Row): (" + tileCol + ", " + tileRow + ")");
 
         if (tileCol >= 0 && tileCol < Game.mapConstructor.getMapColumns() &&

@@ -30,7 +30,7 @@ public class Game extends JPanel implements Runnable{
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
 
-        mapConstructor = new MapConstructor("res/maps/debug_gag_1.zip");
+        mapConstructor = new MapConstructor("res/maps/debug_map_3.zip");
 
         player = new Player();
 
@@ -66,7 +66,7 @@ public class Game extends JPanel implements Runnable{
 
     private void checkCollisions(){
 
-        item.debugTouch2(player);
+        item.itemTouch(player);
     }
 
     @Override

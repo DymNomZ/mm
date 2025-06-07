@@ -70,8 +70,8 @@ public class MapConstructor {
     public void renderMap(Graphics2D g2){
 
         int wx, wy, sx, sy;
-        int px = Game.player.x;
-        int py = Game.player.y;
+        int px = (int)Game.player.x;
+        int py = (int)Game.player.y;
         int psx = Game.player.sx;
         int psy = Game.player.sy;
 
@@ -118,10 +118,8 @@ public class MapConstructor {
             for (int col = leftTileCol; col <= rightTileCol; col++) {
                 // Boundary checks for the map
                 if (col >= 0 && col < mapColumns && row >= 0 && row < mapRows) {
-                    Tile tile = tiles[row][col]; // Assuming tiles[row][col] is the standard access
-                    // Adjust if your array is tiles[col][row]
+                    Tile tile = tiles[row][col];
                     if (tile != null && tile.isSolid) {
-                        // Create a Rectangle for the solid tile in world coordinates
                         Rectangle tileRect = new Rectangle(col * ts, row * ts, ts, ts);
                         if (rectangle.intersects(tileRect)) {
                             // System.out.println("Collision with solid tile at: " + col + "," + row);
