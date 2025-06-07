@@ -6,11 +6,11 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     public boolean wPressed, aPressed, sPressed, dPressed;
-    public boolean fPressed, qPressed;
+    public boolean fPressed, qPressed, ePressed;
 
     private boolean keyBools[] = {
             wPressed, aPressed, sPressed, dPressed,
-            fPressed, qPressed
+            fPressed, qPressed, ePressed
     };
 
     public KeyHandler(){
@@ -36,6 +36,7 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_D -> dPressed = true;
             case KeyEvent.VK_F -> fPressed = true;
             case KeyEvent.VK_Q -> qPressed = true;
+            case KeyEvent.VK_E -> ePressed = true;
         }
 
     }
@@ -52,6 +53,7 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_D -> dPressed = false;
             case KeyEvent.VK_F -> fPressed = false;
             case KeyEvent.VK_Q -> qPressed = false;
+            case KeyEvent.VK_E -> ePressed = false;
         }
     }
 }

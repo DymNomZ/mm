@@ -59,6 +59,14 @@ public class MapConstructor {
         }
     }
 
+    public int getMapColumns() { return mapColumns; }
+
+    public int getMapRows() { return mapRows; }
+
+    public Tile getTile(int col, int row) {
+        return tiles[row][col];
+    }
+
     public void renderMap(Graphics2D g2){
 
         int wx, wy, sx, sy;
@@ -67,8 +75,8 @@ public class MapConstructor {
         int psx = Game.player.sx;
         int psy = Game.player.sy;
 
-        for(int i = 0; i < mapRows; i++){
-            for(int j = 0; j < mapColumns; j++){
+        for(int i = 0; i < mapColumns; i++){
+            for(int j = 0; j < mapRows; j++){
 
                 wx = i * ts;
                 wy = j * ts;

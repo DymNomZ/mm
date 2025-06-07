@@ -13,6 +13,7 @@ public class Game extends JPanel implements Runnable{
     public static MapConstructor mapConstructor;
 
     public static KeyHandler keyHandler;
+    public static MouseHandler mouseHandler;
 
     //entities
     public static Player player;
@@ -24,9 +25,12 @@ public class Game extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
 
         keyHandler = new KeyHandler();
-        this.addKeyListener(keyHandler);
+        mouseHandler = new MouseHandler();
 
-        mapConstructor = new MapConstructor("res/maps/debug_map_3.zip");
+        this.addKeyListener(keyHandler);
+        this.addMouseListener(mouseHandler);
+
+        mapConstructor = new MapConstructor("res/maps/debug_gag_1.zip");
 
         player = new Player();
 
