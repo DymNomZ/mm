@@ -1,6 +1,8 @@
 package entities.normal_seeds;
 
+import core.Configs;
 import core.SpriteLoader;
+import core.Tools;
 import entities.Seed;
 
 public class Mango extends Seed {
@@ -9,7 +11,7 @@ public class Mango extends Seed {
         super();
         this.name = "Mango";
         this.cost = 100000;
-        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.sprite = Tools.tintImage(sprite, Configs.MANGO);
         attemptRandomMutation();
     }
 

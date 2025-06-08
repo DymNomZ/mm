@@ -2,6 +2,7 @@ package entities;
 
 import core.Configs;
 import core.Game;
+import core.SpriteLoader;
 import core.Tools;
 
 import java.awt.*;
@@ -21,8 +22,9 @@ public class Seed extends Item {
     public Seed() {
         this.randomGenerator = new Random();
         this.activeMutations = new HashMap<>();
-        this.ewidth = h;
-        this.eheight = h;
+        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.ewidth = Configs.SEED_SIZE;
+        this.eheight = Configs.SEED_SIZE;
         initializeMutations();
     }
 
@@ -101,6 +103,16 @@ public class Seed extends Item {
         sprite = Tools.tintImage(sprite, Configs.COLORS_MAP.get(mutationName));
     }
 
+    private void renderMutationEffects(Graphics2D g2){
+
+        //ice
+        if(activeMutations.get("ice")){
+            g2.setColor(Configs.ICE);
+            g2.fillRect(sx - q, sy - q, ewidth, eheight);
+        }
+
+    }
+
     @Override
     public void render(Graphics2D g2) {
 
@@ -118,11 +130,14 @@ public class Seed extends Item {
         boolean isVerticallyVisible = (y + ts > py - psy) && (y < py - psy + Configs.SCREEN_HEIGHT);
 
         if (isHorizontallyVisible && isVerticallyVisible) {
-            g2.drawImage(sprite, sx, sy, ewidth, eheight, null);
+            g2.drawImage(sprite, sx - q, sy - q, ewidth, eheight, null);
+
+            //render effects
+            renderMutationEffects(g2);
 
             //Debug draw item's bounding box on screen
             g2.setColor(Color.ORANGE);
-            g2.drawRect(sx, sy, ewidth, eheight);
+            g2.drawRect(sx - q, sy - q, ewidth, eheight);
         }
     }
 

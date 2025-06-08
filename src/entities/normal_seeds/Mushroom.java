@@ -1,6 +1,8 @@
 package entities.normal_seeds;
 
+import core.Configs;
 import core.SpriteLoader;
+import core.Tools;
 import entities.Seed;
 
 public class Mushroom extends Seed {
@@ -9,7 +11,10 @@ public class Mushroom extends Seed {
         super();
         this.name = "Mushroom";
         this.cost = 150000;
-        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.sprite = Tools.gradientImage(
+                sprite,
+                Configs.MUSHROOM_1, Configs.MUSHROOM_2
+        );
         attemptRandomMutation();
     }
 

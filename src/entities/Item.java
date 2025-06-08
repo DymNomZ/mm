@@ -12,6 +12,7 @@ public class Item extends Entity {
 
     public int ts = Configs.TILE_SIZE;
     public int h = Configs.HALF;
+    public int q = Configs.QUARTER;
 
     public Item(){
         this.keyHandler = Game.keyHandler;

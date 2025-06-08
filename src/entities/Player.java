@@ -164,7 +164,7 @@ public class Player extends Entity{
 
     public void plantSeed(int x, int y){
         plantedSeeds.add(
-                new Carrot(x, y)
+                Tools.giveRandomSeed(x, y)
         );
     }
 

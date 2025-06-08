@@ -1,6 +1,8 @@
 package entities.normal_seeds;
 
+import core.Configs;
 import core.SpriteLoader;
+import core.Tools;
 import entities.Seed;
 
 public class Cacao extends Seed {
@@ -9,7 +11,10 @@ public class Cacao extends Seed {
         super();
         this.name = "Cacao";
         this.cost = 2500000;
-        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.sprite = Tools.gradientImage(
+                sprite,
+                Configs.CACAO_1, Configs.CACAO_2
+        );
         attemptRandomMutation();
     }
 

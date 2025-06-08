@@ -31,7 +31,7 @@ class EffectsPanel extends JPanel {
     public EffectsPanel() {
         // --- Load the original image ---
         try {
-            originalMango = ImageIO.read(ImageTintingExample.class.getResourceAsStream("/textures/items/debug_item.png"));
+            originalMango = ImageIO.read(ImageEffectsExample.class.getResourceAsStream("/textures/items/debug_item.png"));
         } catch (IOException e) {
             System.err.println("Error: Could not find mango.png in the same directory!");
             originalMango = createFallbackImage();
@@ -152,8 +152,8 @@ class EffectsPanel extends JPanel {
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
-        int scale = 3;
-        int spacing = 40;
+        int scale = 6;
+        int spacing = 80;
         int startX = 30;
         int startY = 30;
 

@@ -1,6 +1,8 @@
 package entities.normal_seeds;
 
+import core.Configs;
 import core.SpriteLoader;
+import core.Tools;
 import entities.Seed;
 
 public class Tomato extends Seed {
@@ -9,7 +11,7 @@ public class Tomato extends Seed {
         super();
         this.name = "Tomato";
         this.cost = 800;
-        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.sprite = Tools.tintImage(sprite, Configs.TOMATO);
         attemptRandomMutation();
     }
 

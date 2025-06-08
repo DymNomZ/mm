@@ -1,6 +1,8 @@
 package entities.normal_seeds;
 
+import core.Configs;
 import core.SpriteLoader;
+import core.Tools;
 import entities.Seed;
 
 public class OrangeTulip extends Seed {
@@ -9,7 +11,7 @@ public class OrangeTulip extends Seed {
         super();
         this.name = "Orange Tulip";
         this.cost = 600;
-        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.sprite = Tools.tintImage(sprite, Configs.ORANGETULIP);
         attemptRandomMutation();
     }
 

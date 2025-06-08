@@ -1,6 +1,8 @@
 package entities.normal_seeds;
 
+import core.Configs;
 import core.SpriteLoader;
+import core.Tools;
 import entities.Seed;
 
 public class DragonFruit extends Seed {
@@ -9,7 +11,10 @@ public class DragonFruit extends Seed {
         super();
         this.name = "Dragon Fruit";
         this.cost = 45000;
-        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.sprite = Tools.gradientImage(
+                sprite,
+                Configs.DRAGONFRUIT_1, Configs.DRAGONFRUIT_2
+        );
         attemptRandomMutation();
     }
 

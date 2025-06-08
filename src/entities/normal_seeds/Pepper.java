@@ -1,6 +1,8 @@
 package entities.normal_seeds;
 
+import core.Configs;
 import core.SpriteLoader;
+import core.Tools;
 import entities.Seed;
 
 public class Pepper extends Seed {
@@ -9,7 +11,10 @@ public class Pepper extends Seed {
         super();
         this.name = "Pepper";
         this.cost = 1000000;
-        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.sprite = Tools.gradientImage(
+                sprite,
+                Configs.PEPPER_1, Configs.PEPPER_2
+        );
         attemptRandomMutation();
     }
 

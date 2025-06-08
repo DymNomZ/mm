@@ -1,6 +1,8 @@
 package entities.normal_seeds;
 
+import core.Configs;
 import core.SpriteLoader;
+import core.Tools;
 import entities.Seed;
 
 public class Beanstalk extends Seed {
@@ -9,7 +11,10 @@ public class Beanstalk extends Seed {
         super();
         this.name = "Beanstalk";
         this.cost = 10000000;
-        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.sprite = Tools.gradientImage(
+                sprite,
+                Configs.BEANSTALK_1, Configs.BEANSTALK_2
+        );
         attemptRandomMutation();
     }
 
