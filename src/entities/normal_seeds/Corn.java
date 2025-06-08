@@ -12,6 +12,9 @@ public class Corn extends Seed {
         this.name = "Corn";
         this.cost = 1400;
         this.sprite = Tools.tintImage(sprite, Configs.CORN);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_YELLOW_1;
+        this.shockedSecondary = Configs.SHOCKED_YELLOW_1;
         attemptRandomMutation();
     }
 

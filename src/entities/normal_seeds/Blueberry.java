@@ -12,6 +12,9 @@ public class Blueberry extends Seed {
         this.name = "Blueberry";
         this.cost = 400;
         this.sprite = Tools.tintImage(sprite, Configs.BLUEBERRY);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_BLUE_1;
+        this.shockedSecondary = Configs.SHOCKED_BLUE_1;
         attemptRandomMutation();
     }
 

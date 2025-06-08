@@ -12,6 +12,9 @@ public class OrangeTulip extends Seed {
         this.name = "Orange Tulip";
         this.cost = 600;
         this.sprite = Tools.tintImage(sprite, Configs.ORANGETULIP);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_ORANGE_1;
+        this.shockedSecondary = Configs.SHOCKED_ORANGE_1;
         attemptRandomMutation();
     }
 

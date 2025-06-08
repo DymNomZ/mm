@@ -12,6 +12,9 @@ public class Pumpkin extends Seed {
         this.name = "Pumpkin";
         this.cost = 3000;
         this.sprite = Tools.tintImage(sprite, Configs.PUMPKIN);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_ORANGE_2;
+        this.shockedSecondary = Configs.SHOCKED_ORANGE_2;
         attemptRandomMutation();
     }
 

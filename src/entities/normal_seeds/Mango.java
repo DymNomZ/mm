@@ -12,6 +12,9 @@ public class Mango extends Seed {
         this.name = "Mango";
         this.cost = 100000;
         this.sprite = Tools.tintImage(sprite, Configs.MANGO);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_YELLOW_2;
+        this.shockedSecondary = Configs.SHOCKED_YELLOW_2;
         attemptRandomMutation();
     }
 

@@ -12,6 +12,9 @@ public class Bamboo extends Seed {
         this.name = "Bamboo";
         this.cost = 4000;
         this.sprite = Tools.tintImage(sprite, Configs.BAMBOO);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_GREEN_1;
+        this.shockedSecondary = Configs.SHOCKED_GREEN_1;
         attemptRandomMutation();
     }
 

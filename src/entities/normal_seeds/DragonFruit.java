@@ -15,6 +15,9 @@ public class DragonFruit extends Seed {
                 sprite,
                 Configs.DRAGONFRUIT_1, Configs.DRAGONFRUIT_2
         );
+        this.isGradient = true;
+        this.shockedPrimary = Configs.SHOCKED_PINK_1;
+        this.shockedSecondary = Configs.SHOCKED_GREEN_1;
         attemptRandomMutation();
     }
 

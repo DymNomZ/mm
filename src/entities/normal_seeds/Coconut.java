@@ -12,6 +12,9 @@ public class Coconut extends Seed {
         this.name = "Coconut";
         this.cost = 6000;
         this.sprite = Tools.tintImage(sprite, Configs.COCONUT);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_WHITE_1;
+        this.shockedSecondary = Configs.SHOCKED_WHITE_1;
         attemptRandomMutation();
     }
 

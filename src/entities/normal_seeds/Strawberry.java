@@ -12,6 +12,9 @@ public class Strawberry extends Seed {
         this.name = "Strawberry";
         this.cost = 50;
         this.sprite = Tools.tintImage(sprite, Configs.STRAWBERRY);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_RED_2;
+        this.shockedSecondary = Configs.SHOCKED_RED_2;
         attemptRandomMutation();
     }
 

@@ -12,6 +12,9 @@ public class Tomato extends Seed {
         this.name = "Tomato";
         this.cost = 800;
         this.sprite = Tools.tintImage(sprite, Configs.TOMATO);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_RED_2;
+        this.shockedSecondary = Configs.SHOCKED_RED_2;
         attemptRandomMutation();
     }
 

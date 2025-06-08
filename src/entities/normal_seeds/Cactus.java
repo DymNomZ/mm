@@ -12,6 +12,9 @@ public class Cactus extends Seed {
         this.name = "Cactus";
         this.cost = 15000;
         this.sprite = Tools.tintImage(sprite, Configs.CACTUS);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_GREEN_2;
+        this.shockedSecondary = Configs.SHOCKED_GREEN_2;
         attemptRandomMutation();
     }
 

@@ -17,7 +17,9 @@ public class Seed extends Item {
     protected Random randomGenerator;
     public String name;
     public int cost;
-    private boolean hasMutation;
+    public boolean hasMutation, isGradient;
+    public Color shockedPrimary, shockedSecondary;
+    public String currentColoredMutation;
 
     public Seed() {
         this.randomGenerator = new Random();
@@ -25,6 +27,7 @@ public class Seed extends Item {
         this.sprite = SpriteLoader.DEBUG_ITEM;
         this.ewidth = Configs.SEED_SIZE;
         this.eheight = Configs.SEED_SIZE;
+        this.currentColoredMutation = "";
         initializeMutations();
     }
 
@@ -98,15 +101,73 @@ public class Seed extends Item {
 
     private void mutateSprite(String mutationName){
 
+        if(mutationName.equals("energized")){
+            if(!currentColoredMutation.isEmpty()){
+                sprite = Tools.tintImage(
+                        sprite,
+                        Configs.SHOCKED_COLORS_MAP.get(currentColoredMutation)
+                );
+            }
+            else if(isGradient){
+                sprite = Tools.gradientImage(
+                        sprite, shockedPrimary, shockedSecondary
+                    );
+            }
+            else sprite = Tools.tintImage(sprite, shockedPrimary);
+        }
+
         if(!Configs.COLORS_MAP.containsKey(mutationName)) return;
 
         sprite = Tools.tintImage(sprite, Configs.COLORS_MAP.get(mutationName));
+        currentColoredMutation = mutationName;
     }
 
     private void renderMutationEffects(Graphics2D g2){
 
-        //ice
-        if(activeMutations.get("ice")){
+        //cold
+        if(activeMutations.get("cold")){
+            g2.setColor(Configs.COLD);
+            g2.fillRect(sx - et, sy - et, q, q);
+        }
+
+        //any dripping mutation
+        for(int i = 0; i < Configs.DRIPPING_MUTATIONS.length; i++){
+            if(activeMutations.get(Configs.DRIPPING_MUTATIONS[i])){
+                //render sparkles
+                break;
+            }
+        }
+
+        //any fume mutation
+        for(int i = 0; i < Configs.FUME_MUTATION.length; i++){
+            if(activeMutations.get(Configs.FUME_MUTATION[i])){
+                //render sparkles
+                break;
+            }
+        }
+
+        //shamrock
+        if(activeMutations.get("lucky")){
+
+        }
+
+        //explosive
+        if(activeMutations.get("explosive")){
+
+        }
+
+        //any sparkle mutation
+        for(int i = 0; i < Configs.SPARKLE_MUTATIONS.length; i++){
+//            if(activeMutations.get(Configs.SPARKLE_MUTATIONS[i])){
+//                //render sparkles
+//                break;
+//            }
+        }
+
+        //ice (must be moist first AND NOT be cold)
+        if(activeMutations.get("ice") && activeMutations.get("moist")
+                && !activeMutations.get("cold")){
+            activeMutations.put("moist", false);
             g2.setColor(Configs.ICE);
             g2.fillRect(sx - q, sy - q, ewidth, eheight);
         }

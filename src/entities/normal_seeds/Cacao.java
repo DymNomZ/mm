@@ -15,6 +15,9 @@ public class Cacao extends Seed {
                 sprite,
                 Configs.CACAO_1, Configs.CACAO_2
         );
+        this.isGradient = true;
+        this.shockedPrimary = Configs.BROWN;
+        this.shockedSecondary = Configs.SHOCKED_BROWN_1;
         attemptRandomMutation();
     }
 

@@ -15,6 +15,9 @@ public class Daffodil extends Seed {
                 sprite,
                 Configs.DAFFODIL_1, Configs.DAFFODIL_2
         );
+        this.isGradient = true;
+        this.shockedPrimary = Configs.SHOCKED_YELLOW_1;
+        this.shockedSecondary = Configs.SHOCKED_GREEN_2;
         attemptRandomMutation();
     }
 

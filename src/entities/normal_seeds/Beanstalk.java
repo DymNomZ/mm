@@ -15,6 +15,9 @@ public class Beanstalk extends Seed {
                 sprite,
                 Configs.BEANSTALK_1, Configs.BEANSTALK_2
         );
+        this.isGradient = true;
+        this.shockedPrimary = Configs.SHOCKED_GREEN_1;
+        this.shockedSecondary = Configs.SHOCKED_GREEN_2;
         attemptRandomMutation();
     }
 

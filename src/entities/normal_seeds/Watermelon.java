@@ -12,6 +12,9 @@ public class Watermelon extends Seed {
         this.name = "Watermelon";
         this.cost = 2500;
         this.sprite = Tools.tintImage(sprite, Configs.WATERMELON);
+        this.isGradient = false;
+        this.shockedPrimary = Configs.SHOCKED_GREEN_2;
+        this.shockedSecondary = Configs.SHOCKED_GREEN_2;
         attemptRandomMutation();
     }
 

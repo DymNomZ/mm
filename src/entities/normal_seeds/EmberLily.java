@@ -15,6 +15,9 @@ public class EmberLily extends Seed {
                 sprite,
                 Configs.EMBERLILY_1, Configs.EMBERLILY_2
         );
+        this.isGradient = true;
+        this.shockedPrimary = Configs.SHOCKED_ORANGE_2;
+        this.shockedSecondary = Configs.SHOCKED_CYAN_1;
         attemptRandomMutation();
     }
 
