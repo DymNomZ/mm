@@ -8,7 +8,7 @@ public class Item extends Entity {
 
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
-    private boolean hide;
+    public boolean hide;
 
     public int ts = Configs.TILE_SIZE;
     public int h = Configs.HALF;

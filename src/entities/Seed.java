@@ -1,31 +1,17 @@
 package entities;
 
+import core.Configs;
+import core.Game;
+import core.Tools;
+
+import java.awt.*;
 import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
 
 public class Seed extends Item {
 
-    public String[] mutationNames = {
-            "moist", "cold", "brown", "lunar", "toxic",
-            "fertilized", "bloodlunar", "laser", "mapleglazed", "charcoal", "godly",
-            "ice", "candy", "shiny",
-            "infected", "lucky", "explosive",
-            "energized", "galatic", "party",
-            "black", "white", "magical"
-    };
-
-    public int multipliers[] = {
-            2, 2, 2, 2, 2,
-            3, 4, 5, 5, 5, 5,
-            10, 15, 20,
-            25, 69, 70,
-            100, 120, 125,
-            135, 150, 200
-    };
-
     public Map<String, Boolean> activeMutations;
-    public Map<String, Integer> multipliersMap;
 
     protected Random randomGenerator;
     public String name;
@@ -35,7 +21,6 @@ public class Seed extends Item {
     public Seed() {
         this.randomGenerator = new Random();
         this.activeMutations = new HashMap<>();
-        this.multipliersMap = new HashMap<>();
         this.ewidth = h;
         this.eheight = h;
         initializeMutations();
@@ -43,18 +28,14 @@ public class Seed extends Item {
 
     private void initializeMutations() {
 
-        for(int i = 0; i < mutationNames.length; i++){
-            multipliersMap.put(mutationNames[i], multipliers[i]);
-        }
-
-        for(int i = 0; i < mutationNames.length; i++){
-            activeMutations.put(name, false);
+        for(int i = 0; i < Configs.MUTATION_NAMES.length; i++){
+            activeMutations.put(Configs.MUTATION_NAMES[i], false);
         }
     }
 
     protected void attemptRandomMutation() {
         // Higher chance of NO mutation
-        double noMutationChance = 0.70; // 60% chance of NO mutation
+        double noMutationChance = 0.50; // 50% chance of NO mutation
         if (randomGenerator.nextDouble() < noMutationChance) {
              System.out.println(this.name + " got no mutation.");
             return; // Exit without applying any mutation
@@ -66,14 +47,14 @@ public class Seed extends Item {
         // Tier definitions by index ranges
         // Tier 1 (Common): 0-4 (5 mutations) - Weight 10
         // Tier 2: 5-10 (6 mutations) - Weight 8
-        // Tier 3: 11-13 (3 mutations) - Weight 6
-        // Tier 4: 14-16 (3 mutations) - Weight 4
-        // Tier 5: 17-19 (3 mutations) - Weight 2
-        // Tier 6 (Rare): 20-22 (3 mutations) - Weight 1
+        // Tier 3: 11-14 (4 mutations) - Weight 6
+        // Tier 4: 15-17 (3 mutations) - Weight 4
+        // Tier 5: 18-20 (3 mutations) - Weight 2
+        // Tier 6 (Rare): 21-23 (3 mutations) - Weight 1
         // (Adjust these indices and weights based on the final ALL_MUTATION_NAMES list)
 
         int[] tierWeights = {10, 8, 6, 4, 2, 1}; // Weights for Tier 1 to Tier 6
-        int[] tierStartIndex = {0, 5, 11, 14, 17, 20}; // Start index in ALL_MUTATION_NAMES for each tier
+        int[] tierStartIndex = {0, 5, 11, 15, 18, 21}; // Start index in ALL_MUTATION_NAMES for each tier
         int[] tierMutationCount = {5, 6, 3, 3, 3, 3}; // Number of mutations in each tier
 
         int totalWeight = 0;
@@ -101,7 +82,7 @@ public class Seed extends Item {
 
 //            System.out.println(mutationNames[finalMutationIndexInAllNames]);
 
-            applyMutation(mutationNames[finalMutationIndexInAllNames]);
+            applyMutation(Configs.MUTATION_NAMES[finalMutationIndexInAllNames]);
         }
     }
 
@@ -109,15 +90,40 @@ public class Seed extends Item {
         activeMutations.put(mutationName, true);
         hasMutation = true;
         System.out.println(this.name + " mutated into " + mutationName);
+
+        mutateSprite(mutationName);
     }
 
-    public boolean hasMutation(String mutationName) {
-        return activeMutations.getOrDefault(mutationName, false);
+    private void mutateSprite(String mutationName){
+
+        if(!Configs.COLORS_MAP.containsKey(mutationName)) return;
+
+        sprite = Tools.tintImage(sprite, Configs.COLORS_MAP.get(mutationName));
     }
 
-    public int getActiveMutationMultiplier() {
+    @Override
+    public void render(Graphics2D g2) {
 
-        return 1; // Default multiplier if no mutation
+        if (hide) return;
+
+        int px = (int) Game.player.x;
+        int py = (int) Game.player.y;
+        int psx = Game.player.sx;
+        int psy = Game.player.sy;
+
+        this.sx = (int) (x - px + psx);
+        this.sy = (int) (y - py + psy);
+
+        boolean isHorizontallyVisible = (x + ts > px - psx) && (x < px - psx + Configs.SCREEN_WIDTH);
+        boolean isVerticallyVisible = (y + ts > py - psy) && (y < py - psy + Configs.SCREEN_HEIGHT);
+
+        if (isHorizontallyVisible && isVerticallyVisible) {
+            g2.drawImage(sprite, sx, sy, ewidth, eheight, null);
+
+            //Debug draw item's bounding box on screen
+            g2.setColor(Color.ORANGE);
+            g2.drawRect(sx, sy, ewidth, eheight);
+        }
     }
 
 }

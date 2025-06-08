@@ -39,6 +39,7 @@ public class Game extends JPanel implements Runnable{
     }
 
     public void start(){
+        Configs.init();
         gameThread.start();
     }
 
