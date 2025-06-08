@@ -1,6 +1,7 @@
 package entities;
 
 import core.*;
+import entities.normal_seeds.Carrot;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
