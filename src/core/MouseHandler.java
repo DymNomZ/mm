@@ -26,16 +26,19 @@ public class MouseHandler implements MouseListener {
         int tileCol = mx / ts;
         int tileRow = my / ts;
 
-        System.out.println("Screen Click: (" + screenX + ", " + screenY + ")");
-        System.out.println("World Coords: (" + mx + ", " + my + ") -- Calculated using player world (int): (" + px + ", " + py + ")");
-        System.out.println("Clicked Tile Coords (Col, Row): (" + tileCol + ", " + tileRow + ")");
+//        System.out.println("Screen Click: (" + screenX + ", " + screenY + ")");
+//        System.out.println("World Coords: (" + mx + ", " + my + ") -- Calculated using player world (int): (" + px + ", " + py + ")");
+//        System.out.println("Clicked Tile Coords (Col, Row): (" + tileCol + ", " + tileRow + ")");
+
+        //call player plant seed function
+        Game.player.plantSeed(mx, my);
 
         if (tileCol >= 0 && tileCol < Game.mapConstructor.getMapColumns() &&
                 tileRow >= 0 && tileRow < Game.mapConstructor.getMapRows()) {
 
             Tile clickedTile = Game.mapConstructor.getTile(tileCol, tileRow);
             if (clickedTile != null) {
-                System.out.println("Clicked on Tile: " + clickedTile.name + " (Solid: " + clickedTile.isSolid + ")");
+//                System.out.println("Clicked on Tile: " + clickedTile.name + " (Solid: " + clickedTile.isSolid + ")");
 
             } else {
                 System.out.println("Clicked on a null tile (shouldn't happen if within bounds and map is initialized).");

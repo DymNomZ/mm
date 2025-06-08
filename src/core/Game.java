@@ -1,7 +1,7 @@
 package core;
 
-import entities.Item;
 import entities.Player;
+import entities.Seed;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,6 @@ public class Game extends JPanel implements Runnable{
 
     //entities
     public static Player player;
-    public static Item item;
 
     public Game(){
         this.setPreferredSize(new Dimension(Configs.SCREEN_WIDTH, Configs.SCREEN_HEIGHT));
@@ -30,11 +29,9 @@ public class Game extends JPanel implements Runnable{
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
 
-        mapConstructor = new MapConstructor("res/maps/debug_map_3.zip");
+        mapConstructor = new MapConstructor("res/maps/debug_gag_2.zip");
 
         player = new Player();
-
-        item = new Item();
 
         this.setFocusable(true);
 
@@ -59,14 +56,12 @@ public class Game extends JPanel implements Runnable{
 
         mapConstructor.renderMap(g2);
 
-        item.render(g2);
-
         player.render(g2);
     }
 
     private void checkCollisions(){
 
-        item.itemTouch(player);
+        //logic
     }
 
     @Override

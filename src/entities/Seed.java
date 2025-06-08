@@ -1,0 +1,123 @@
+package entities;
+
+import java.util.Random;
+import java.util.Map;
+import java.util.HashMap;
+
+public class Seed extends Item {
+
+    public String[] mutationNames = {
+            "moist", "cold", "brown", "lunar", "toxic",
+            "fertilized", "bloodlunar", "laser", "mapleglazed", "charcoal", "godly",
+            "ice", "candy", "shiny",
+            "infected", "lucky", "explosive",
+            "energized", "galatic", "party",
+            "black", "white", "magical"
+    };
+
+    public int multipliers[] = {
+            2, 2, 2, 2, 2,
+            3, 4, 5, 5, 5, 5,
+            10, 15, 20,
+            25, 69, 70,
+            100, 120, 125,
+            135, 150, 200
+    };
+
+    public Map<String, Boolean> activeMutations;
+    public Map<String, Integer> multipliersMap;
+
+    protected Random randomGenerator;
+    public String name;
+    public int cost;
+    private boolean hasMutation;
+
+    public Seed() {
+        this.randomGenerator = new Random();
+        this.activeMutations = new HashMap<>();
+        this.multipliersMap = new HashMap<>();
+        this.ewidth = h;
+        this.eheight = h;
+        initializeMutations();
+    }
+
+    private void initializeMutations() {
+
+        for(int i = 0; i < mutationNames.length; i++){
+            multipliersMap.put(mutationNames[i], multipliers[i]);
+        }
+
+        for(int i = 0; i < mutationNames.length; i++){
+            activeMutations.put(name, false);
+        }
+    }
+
+    protected void attemptRandomMutation() {
+        // Higher chance of NO mutation
+        double noMutationChance = 0.70; // 60% chance of NO mutation
+        if (randomGenerator.nextDouble() < noMutationChance) {
+             System.out.println(this.name + " got no mutation.");
+            return; // Exit without applying any mutation
+        }
+
+        // If we proceed, there's a (1 - noMutationChance) to get *some* mutation.
+        // Now, distribute this remaining probability among the tiers.
+
+        // Tier definitions by index ranges
+        // Tier 1 (Common): 0-4 (5 mutations) - Weight 10
+        // Tier 2: 5-10 (6 mutations) - Weight 8
+        // Tier 3: 11-13 (3 mutations) - Weight 6
+        // Tier 4: 14-16 (3 mutations) - Weight 4
+        // Tier 5: 17-19 (3 mutations) - Weight 2
+        // Tier 6 (Rare): 20-22 (3 mutations) - Weight 1
+        // (Adjust these indices and weights based on the final ALL_MUTATION_NAMES list)
+
+        int[] tierWeights = {10, 8, 6, 4, 2, 1}; // Weights for Tier 1 to Tier 6
+        int[] tierStartIndex = {0, 5, 11, 14, 17, 20}; // Start index in ALL_MUTATION_NAMES for each tier
+        int[] tierMutationCount = {5, 6, 3, 3, 3, 3}; // Number of mutations in each tier
+
+        int totalWeight = 0;
+        for (int weight : tierWeights) {
+            totalWeight += weight;
+        }
+
+        int randomPick = randomGenerator.nextInt(totalWeight);
+        int cumulativeWeight = 0;
+        int selectedTierIndex = -1; // 0 for Tier 1, 1 for Tier 2, etc.
+
+        for (int i = 0; i < tierWeights.length; i++) {
+            cumulativeWeight += tierWeights[i];
+            if (randomPick < cumulativeWeight) {
+                selectedTierIndex = i;
+                break;
+            }
+        }
+
+        if (selectedTierIndex != -1) {
+            int baseIndexOfTier = tierStartIndex[selectedTierIndex];
+            int mutationsInTier = tierMutationCount[selectedTierIndex];
+            int mutationOffsetInTier = randomGenerator.nextInt(mutationsInTier);
+            int finalMutationIndexInAllNames = baseIndexOfTier + mutationOffsetInTier;
+
+//            System.out.println(mutationNames[finalMutationIndexInAllNames]);
+
+            applyMutation(mutationNames[finalMutationIndexInAllNames]);
+        }
+    }
+
+    private void applyMutation(String mutationName) {
+        activeMutations.put(mutationName, true);
+        hasMutation = true;
+        System.out.println(this.name + " mutated into " + mutationName);
+    }
+
+    public boolean hasMutation(String mutationName) {
+        return activeMutations.getOrDefault(mutationName, false);
+    }
+
+    public int getActiveMutationMultiplier() {
+
+        return 1; // Default multiplier if no mutation
+    }
+
+}

@@ -4,6 +4,7 @@ import core.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Player extends Entity{
 
@@ -28,6 +29,8 @@ public class Player extends Entity{
     private int animationTick = 0;
     private int animationSpeed = 10;
     private int currentFrameIndex = 0;
+
+    public ArrayList<Seed> plantedSeeds = new ArrayList<>();
 
     public Player() {
         this.keyHandler = Game.keyHandler;
@@ -158,12 +161,17 @@ public class Player extends Entity{
         }
     }
 
+    public void plantSeed(int x, int y){
+        plantedSeeds.add(
+                new Carrot(x, y)
+        );
+    }
+
     public void dropItem(){
 
         if(!keyHandler.qPressed) return;
 
         //to be changes to actual drop implementation
-        Game.item.debugDrop((int)x, (int)y);
     }
 
     public void move() {
@@ -281,6 +289,10 @@ public class Player extends Entity{
             g2.drawRect(reachScreenX, reachScreenY, this.reach.width, this.reach.height);
         }
 
+        //render player's planted seeds
+        for(Seed s : plantedSeeds){
+            s.render(g2);
+        }
 
         g2.drawImage(sprite, sx, sy, ewidth, eheight, null);
 

@@ -7,18 +7,16 @@ import java.awt.*;
 public class Item extends Entity {
 
     private KeyHandler keyHandler;
+    private MouseHandler mouseHandler;
     private boolean hide;
 
-    private int ts;
+    public int ts = Configs.TILE_SIZE;
+    public int h = Configs.HALF;
 
     public Item(){
         this.keyHandler = Game.keyHandler;
-        this.x = Tools.getRandomX();
-        this.y = Tools.getRandomY();
-        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.mouseHandler = Game.mouseHandler;
         this.hide = false;
-        //to be changed by actual player dimensions and item size
-        this.ts = Configs.TILE_SIZE;
     }
 
     public void debugDrop(int x, int y) {
@@ -37,12 +35,10 @@ public class Item extends Entity {
 
     public void itemTouch(Player p){
 
-        int itemSize = ts; //for now
-
         int il = (int)x;
-        int ir = (int)(x + itemSize);
+        int ir = (int)(x + ewidth);
         int it = (int)y;
-        int ib = (int)(y + itemSize);
+        int ib = (int)(y + eheight);
 
         int pl = p.reach.x;
         int pr = p.reach.x + p.reach.width;
@@ -61,8 +57,6 @@ public class Item extends Entity {
 
         if (hide) return;
 
-        int ts = Configs.TILE_SIZE;
-
         int px = (int) Game.player.x;
         int py = (int) Game.player.y;
         int psx = Game.player.sx;
@@ -75,11 +69,11 @@ public class Item extends Entity {
         boolean isVerticallyVisible = (y + ts > py - psy) && (y < py - psy + Configs.SCREEN_HEIGHT);
 
         if (isHorizontallyVisible && isVerticallyVisible) {
-            g2.drawImage(sprite, sx, sy, ts, ts, null);
+            g2.drawImage(sprite, sx, sy, ewidth, eheight, null);
 
             //Debug draw item's bounding box on screen
             g2.setColor(Color.ORANGE);
-            g2.drawRect(sx, sy, ts, ts);
+            g2.drawRect(sx, sy, ewidth, eheight);
         }
     }
 }

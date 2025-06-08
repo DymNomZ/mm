@@ -20,4 +20,5 @@ public class Tools {
     public static int getRandomY(){
         return rand.nextInt(0, maxY);
     }
+
 }
