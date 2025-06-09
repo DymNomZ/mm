@@ -15,7 +15,6 @@ public class Mango extends Seed {
         this.isGradient = false;
         this.shockedPrimary = Configs.SHOCKED_YELLOW_2;
         this.shockedSecondary = Configs.SHOCKED_YELLOW_2;
-        attemptRandomMutation();
     }
 
     public Mango(int x, int y){

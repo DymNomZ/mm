@@ -4,12 +4,23 @@ import world.Tile;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-public class MouseHandler implements MouseListener {
+public class MouseHandler implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
         handleMouseClick(e.getX(), e.getY());
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        Game.mousePosition.setLocation(e.getX(), e.getY());
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        Game.mousePosition.setLocation(e.getX(), e.getY());
     }
 
     private void handleMouseClick(int screenX, int screenY) {

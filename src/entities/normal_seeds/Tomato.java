@@ -15,7 +15,6 @@ public class Tomato extends Seed {
         this.isGradient = false;
         this.shockedPrimary = Configs.SHOCKED_RED_2;
         this.shockedSecondary = Configs.SHOCKED_RED_2;
-        attemptRandomMutation();
     }
 
     public Tomato(int x, int y){

@@ -292,6 +292,7 @@ public class Player extends Entity{
 
         //render player's planted seeds
         for(Seed s : plantedSeeds){
+            if(s.hide) continue;
             s.render(g2);
         }
 

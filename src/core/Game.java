@@ -5,6 +5,7 @@ import entities.Seed;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Game extends JPanel implements Runnable{
 
@@ -17,6 +18,8 @@ public class Game extends JPanel implements Runnable{
 
     //entities
     public static Player player;
+    private static Seed hoveredSeed = null;
+    public static Point mousePosition = new Point(0, 0);
 
     public Game(){
         this.setPreferredSize(new Dimension(Configs.SCREEN_WIDTH, Configs.SCREEN_HEIGHT));
@@ -28,6 +31,7 @@ public class Game extends JPanel implements Runnable{
 
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
+        this.addMouseMotionListener(mouseHandler);
 
         mapConstructor = new MapConstructor("res/maps/debug_gag_2.zip");
 
@@ -43,11 +47,52 @@ public class Game extends JPanel implements Runnable{
         gameThread.start();
     }
 
-    private void update(){
+    public void updateHoveredSeed() {
 
+        int px = (int) player.x;
+        int py = (int) player.y;
+        int psx = player.sx;
+        int psy = player.sy;
+
+        int mx = px - psx + mousePosition.x;
+        int my = py - psy + mousePosition.y;
+
+        Seed currentlyFoundSeed = null;
+
+        for (int i = player.plantedSeeds.size() - 1; i >= 0; i--) {
+            Seed seed = player.plantedSeeds.get(i);
+            if (seed.hide) continue; // Skip hidden seeds
+
+            int seedWorldX = (int) seed.x;
+            int seedWorldY = (int) seed.y;
+            int seedWidth = seed.ewidth;
+            int seedHeight = seed.eheight;
+
+            Rectangle seedBounds = new Rectangle(seedWorldX, seedWorldY, seedWidth, seedHeight);
+
+            if (seedBounds.contains(mx, my)) {
+                currentlyFoundSeed = seed;
+                break; // Found the topmost seed, no need to check others underneath
+            }
+        }
+
+        // Update the hoveredSeed field. This will trigger a repaint if it changes,
+        // or you can force repaint if you always want tooltip to update position.
+        if (hoveredSeed != currentlyFoundSeed) {
+            hoveredSeed = currentlyFoundSeed;
+            //repaint(); // Optionally repaint if the hovered seed changes
+        }
+        // If you want the tooltip to always follow the mouse even if the hoveredSeed doesn't change,
+        // you might always call repaint() from mouseMoved/Dragged, but that can be less efficient.
+        // It's often better to only repaint if the state (hoveredSeed) changes.
+        // The tooltip drawing will use the latest mousePosition anyway.
+    }
+
+    private void update(){
         player.move();
         player.handleInteractions();
         player.dropItem();
+        updateHoveredSeed();
     }
 
     public void paintComponent(Graphics g){
@@ -58,6 +103,9 @@ public class Game extends JPanel implements Runnable{
         mapConstructor.renderMap(g2);
 
         player.render(g2);
+
+        Tools.renderSeedTooltip(g2, hoveredSeed);
+
     }
 
     private void checkCollisions(){

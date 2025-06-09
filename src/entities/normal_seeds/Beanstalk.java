@@ -18,7 +18,6 @@ public class Beanstalk extends Seed {
         this.isGradient = true;
         this.shockedPrimary = Configs.SHOCKED_GREEN_1;
         this.shockedSecondary = Configs.SHOCKED_GREEN_2;
-        attemptRandomMutation();
     }
 
     public Beanstalk(int x, int y){

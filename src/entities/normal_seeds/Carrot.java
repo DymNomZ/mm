@@ -14,7 +14,6 @@ public class Carrot extends Seed {
         this.isGradient = false;
         this.shockedPrimary = Configs.SHOCKED_ORANGE_1;
         this.shockedSecondary = Configs.SHOCKED_ORANGE_1;
-        attemptRandomMutation();
     }
 
     public Carrot(int x, int y){

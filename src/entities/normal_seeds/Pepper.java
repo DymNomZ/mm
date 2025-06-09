@@ -18,7 +18,6 @@ public class Pepper extends Seed {
         this.isGradient = true;
         this.shockedPrimary = Configs.SHOCKED_RED_1;
         this.shockedSecondary = Configs.SHOCKED_RED_3;
-        attemptRandomMutation();
     }
 
     public Pepper(int x, int y){

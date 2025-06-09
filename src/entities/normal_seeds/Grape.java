@@ -15,7 +15,6 @@ public class Grape extends Seed {
         this.isGradient = false;
         this.shockedPrimary = Configs.SHOCKED_PURPLE_1;
         this.shockedSecondary = Configs.SHOCKED_PURPLE_1;
-        attemptRandomMutation();
     }
 
     public Grape(int x, int y){

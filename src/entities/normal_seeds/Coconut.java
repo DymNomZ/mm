@@ -15,7 +15,6 @@ public class Coconut extends Seed {
         this.isGradient = false;
         this.shockedPrimary = Configs.SHOCKED_WHITE_1;
         this.shockedSecondary = Configs.SHOCKED_WHITE_1;
-        attemptRandomMutation();
     }
 
     public Coconut(int x, int y){

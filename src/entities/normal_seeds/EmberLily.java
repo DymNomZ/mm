@@ -18,7 +18,6 @@ public class EmberLily extends Seed {
         this.isGradient = true;
         this.shockedPrimary = Configs.SHOCKED_ORANGE_2;
         this.shockedSecondary = Configs.SHOCKED_CYAN_1;
-        attemptRandomMutation();
     }
 
     public EmberLily(int x, int y){

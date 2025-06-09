@@ -15,7 +15,6 @@ public class OrangeTulip extends Seed {
         this.isGradient = false;
         this.shockedPrimary = Configs.SHOCKED_ORANGE_1;
         this.shockedSecondary = Configs.SHOCKED_ORANGE_1;
-        attemptRandomMutation();
     }
 
     public OrangeTulip(int x, int y){

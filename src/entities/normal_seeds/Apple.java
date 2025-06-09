@@ -18,7 +18,6 @@ public class Apple extends Seed {
         this.isGradient = true;
         this.shockedPrimary = Configs.SHOCKED_RED_1;
         this.shockedSecondary = Configs.SHOCKED_RED_1;
-        attemptRandomMutation();
     }
 
     public Apple(int x, int y){

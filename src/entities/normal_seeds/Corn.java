@@ -15,7 +15,6 @@ public class Corn extends Seed {
         this.isGradient = false;
         this.shockedPrimary = Configs.SHOCKED_YELLOW_1;
         this.shockedSecondary = Configs.SHOCKED_YELLOW_1;
-        attemptRandomMutation();
     }
 
     public Corn(int x, int y){

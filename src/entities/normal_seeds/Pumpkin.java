@@ -15,7 +15,6 @@ public class Pumpkin extends Seed {
         this.isGradient = false;
         this.shockedPrimary = Configs.SHOCKED_ORANGE_2;
         this.shockedSecondary = Configs.SHOCKED_ORANGE_2;
-        attemptRandomMutation();
     }
 
     public Pumpkin(int x, int y){

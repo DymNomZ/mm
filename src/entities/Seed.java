@@ -6,34 +6,45 @@ import core.SpriteLoader;
 import core.Tools;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
 
 public class Seed extends Item {
 
-    public Map<String, Boolean> activeMutations;
-
-    protected Random randomGenerator;
-    public String name;
-    public int cost;
     private int sSize = Configs.SEED_SIZE;
     private int sOff = Configs.SEED_OFFSET;
-    public boolean hasMutation, isGradient;
-    public Color shockedPrimary, shockedSecondary;
-    public String currentColoredMutation;
+    protected Random randomGenerator;
+
     private float hueOffset = 0.0f;
     private int colorIndex = 0;
     private int frameCounter = 0;
     private static final int CHANGE_INTERVAL = 15;
 
+    protected StringBuilder sb;
+    protected String freeString;
+
+    public String name;
+    public int cost;
+    public Map<String, Boolean> activeMutations;
+    private ArrayList<String> currentMutations;
+
+    protected boolean hasMutation, isGradient;
+    protected Color shockedPrimary, shockedSecondary;
+    protected String currentColoredMutation;
+
     public Seed() {
         this.randomGenerator = new Random();
         this.activeMutations = new HashMap<>();
+        this.currentMutations = new ArrayList<>();
         this.sprite = SpriteLoader.DEBUG_ITEM;
         this.ewidth = sSize;
         this.eheight = sSize;
         this.currentColoredMutation = "";
+        this.freeString = "";
+        this.sb  = new StringBuilder();
+        attemptRandomMutation();
         initializeMutations();
     }
 
@@ -48,7 +59,7 @@ public class Seed extends Item {
         // Higher chance of NO mutation
         double noMutationChance = 0.50; // 50% chance of NO mutation
         if (randomGenerator.nextDouble() < noMutationChance) {
-             System.out.println(this.name + " got no mutation.");
+//             System.out.println(this.name + " got no mutation.");
             return; // Exit without applying any mutation
         }
 
@@ -100,8 +111,8 @@ public class Seed extends Item {
     private void applyMutation(String mutationName) {
         activeMutations.put(mutationName, true);
         hasMutation = true;
-        System.out.println(this.name + " mutated into " + mutationName);
-
+//        System.out.println(this.name + " mutated into " + mutationName);
+        currentMutations.add(mutationName);
         mutateSprite(mutationName);
     }
 
@@ -205,7 +216,7 @@ public class Seed extends Item {
         if(activeMutations.get("ice") && activeMutations.get("moist")
                 && !activeMutations.get("cold")){
             activeMutations.put("moist", false);
-            g2.setColor(Configs.ICE);
+            g2.setColor(Configs.ICE_1);
             g2.fillRect(sx - sOff, sy - sOff, ewidth, eheight);
         }
 
@@ -278,6 +289,40 @@ public class Seed extends Item {
             g2.setColor(Color.ORANGE);
             g2.drawRect(sx, sy, ewidth, eheight);
         }
+    }
+
+    public ArrayList<String> getActiveMutationDisplayStrings() {
+
+        ArrayList<String> displayStrings = new ArrayList<>();
+
+        if (currentMutations != null && !currentMutations.isEmpty()) {
+            for (String mutationName : currentMutations) {
+                int multiplier = Configs.MULTIPLIERS_MAP.getOrDefault(mutationName, 1);
+                displayStrings.add(mutationName + " (x" + multiplier + ")");
+            }
+        }
+        return displayStrings;
+    }
+
+    @Override
+    public String toString() {
+
+        sb.append(this.name != null ? this.name : "Unknown Seed");
+
+        ArrayList<String> mutationDisplays = getActiveMutationDisplayStrings();
+
+        if (!mutationDisplays.isEmpty()) {
+            sb.append(System.lineSeparator()); // Conceptually a second line
+            boolean first = true;
+            for (String display : mutationDisplays) {
+                if (!first) {
+                    sb.append(" + ");
+                }
+                sb.append(display);
+                first = false;
+            }
+        }
+        return sb.toString();
     }
 
 }

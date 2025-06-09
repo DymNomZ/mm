@@ -18,7 +18,6 @@ public class DragonFruit extends Seed {
         this.isGradient = true;
         this.shockedPrimary = Configs.SHOCKED_PINK_1;
         this.shockedSecondary = Configs.SHOCKED_GREEN_1;
-        attemptRandomMutation();
     }
 
     public DragonFruit(int x, int y){

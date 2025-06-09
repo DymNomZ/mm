@@ -18,7 +18,6 @@ public class Cacao extends Seed {
         this.isGradient = true;
         this.shockedPrimary = Configs.BROWN;
         this.shockedSecondary = Configs.SHOCKED_BROWN_1;
-        attemptRandomMutation();
     }
 
     public Cacao(int x, int y){
