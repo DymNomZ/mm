@@ -5,7 +5,6 @@ import entities.Seed;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Game extends JPanel implements Runnable{
 
@@ -15,6 +14,9 @@ public class Game extends JPanel implements Runnable{
 
     public static KeyHandler keyHandler;
     public static MouseHandler mouseHandler;
+
+    private int et = Configs.EIGHTH;
+    private int q = Configs.QUARTER;
 
     //entities
     public static Player player;
@@ -63,8 +65,8 @@ public class Game extends JPanel implements Runnable{
             Seed seed = player.plantedSeeds.get(i);
             if (seed.hide) continue; // Skip hidden seeds
 
-            int seedWorldX = (int) seed.x;
-            int seedWorldY = (int) seed.y;
+            int seedWorldX = (int) seed.x - et;
+            int seedWorldY = (int) seed.y - et;
             int seedWidth = seed.ewidth;
             int seedHeight = seed.eheight;
 
