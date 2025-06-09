@@ -118,19 +118,31 @@ public class Configs {
     public static final Color ABYSSAL = new Color(7, 0, 19, 255);
     public static final Color ASHEN = new Color(220, 220, 220, 255);
 
+    public static final Color CANDY_1 = new Color(240, 0, 0, 255);
+    public static final Color CANDY_2 = new Color(255, 255, 255, 255);
+    public static final Color GALACTIC_1 = new Color(7, 0, 87, 255);
+    public static final Color GALACTIC_2 = new Color(150, 31, 183, 255);
+    public static final Color MAGICAL_1 = new Color(6, 118, 255, 255);
+    public static final Color MAGICAL_2 = new Color(255, 255, 255, 255);
+
+    public static Color[] PARTY_COLORS = {
+            SHOCKED_RED_1, SHOCKED_ORANGE_1, SHOCKED_YELLOW_1, SHOCKED_GREEN_1,
+            Color.CYAN, Color.BLUE, SHOCKED_PURPLE_1, SHOCKED_PINK_1
+    };
+
+    private static String[] COLORED_MUTATIONS = {
+            "cold", "brown", "lunar", "fertilized", "bloodlunar", "laser",
+            "charred", "shiny", "abyssal", "ashen"
+    };
+
     private static Color[] COLORS = {
-            BROWN, LUNAR, FERTILIZED, BLOODLUNAR, LASER,
+            COLD, BROWN, LUNAR, FERTILIZED, BLOODLUNAR, LASER,
             CHARRED, SHINY, ABYSSAL, ASHEN
     };
 
     private static Color[] SHOCKED_COLORS = {
-            SHOCKED_BROWN_1, SHOCKED_INDIGO_1, SHOCKED_YELLOW_2, SHOCKED_RED_3, SHOCKED_PINK_2,
-            SHOCKED_GRAY_1, SHOCKED_YELLOW_1,SHOCKED_BLACK_1, SHOCKED_WHITE_1
-    };
-
-    private static String[] COLORED_MUTATIONS = {
-            "brown", "lunar", "fertilized", "bloodlunar", "laser",
-            "charred", "shiny", "abyssal", "ashen"
+            SHOCKED_BLUE_1, SHOCKED_BROWN_1, SHOCKED_INDIGO_1, SHOCKED_YELLOW_2, SHOCKED_RED_3,
+            SHOCKED_PINK_2,SHOCKED_GRAY_1, SHOCKED_YELLOW_1,SHOCKED_BLACK_1, SHOCKED_WHITE_1
     };
 
     public static String[] SPARKLE_MUTATIONS = {
@@ -159,41 +171,9 @@ public class Configs {
         }
 
         for(int i = 0; i < SHOCKED_COLORS.length; i++){
-            COLORS_MAP.put(COLORED_MUTATIONS[i], SHOCKED_COLORS[i]);
+            SHOCKED_COLORS_MAP.put(COLORED_MUTATIONS[i], SHOCKED_COLORS[i]);
         }
 
     }
-
-    //GRADIENT
-    //CANDY, RAINBOW, GALACTIC, MAGICAL
-
-    //NEON
-    //ENERGIZED
-    //PARTY - ALTERNATING
-
-    //DRIPPING
-    //MOIST - WATER
-    //INFECTED - GREEN LIQUID
-    //MAPLEGLAZED - MAPLE SYRUP
-
-    //SPARKLES
-    //LUNAR, BLOODLUNAR, LASER, SHINY, GALACTIC, WHITE, MAGIC
-
-    //FROST
-    //COLD
-
-    //SHAMROCK
-    //LUCKY
-
-    //COMIC EXPLOSIVE
-    //EXPLOSIVE
-
-    //LIGHT RAY
-    //GODLY
-
-    //FUMES
-    //FERTILIZED, TOXIC, BLACK
-
-    //ICE BLOCK - ICE
 
 }

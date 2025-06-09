@@ -20,6 +20,10 @@ public class Seed extends Item {
     public boolean hasMutation, isGradient;
     public Color shockedPrimary, shockedSecondary;
     public String currentColoredMutation;
+    private float hueOffset = 0.0f;
+    private int colorIndex = 0;
+    private int frameCounter = 0;
+    private static final int CHANGE_INTERVAL = 15;
 
     public Seed() {
         this.randomGenerator = new Random();
@@ -99,7 +103,35 @@ public class Seed extends Item {
         mutateSprite(mutationName);
     }
 
+    private void gradientMutation(
+            Color color1, Color color2, Color shocked1, Color shocked2
+    ){
+        sprite = Tools.gradientImage(
+                sprite, color1, color2
+        );
+
+        //override shocked colors, and make non gradient seeds gradient
+        isGradient = true;
+        shockedPrimary = shocked1;
+        shockedSecondary = shocked2;
+    }
+
     private void mutateSprite(String mutationName){
+
+        switch (mutationName) {
+            case "candy" -> gradientMutation(
+                    Configs.CANDY_1, Configs.CANDY_2,
+                    Configs.SHOCKED_RED_1, Configs.SHOCKED_WHITE_1
+            );
+            case "galactic" -> gradientMutation(
+                    Configs.GALACTIC_1, Configs.GALACTIC_2,
+                    Configs.SHOCKED_BLUE_1, Configs.SHOCKED_PINK_1
+            );
+            case "magical" -> gradientMutation(
+                    Configs.MAGICAL_1, Configs.MAGICAL_2,
+                    Configs.SHOCKED_BLUE_1, Configs.SHOCKED_WHITE_1
+            );
+        }
 
         if(mutationName.equals("energized")){
             if(!currentColoredMutation.isEmpty()){
@@ -123,12 +155,6 @@ public class Seed extends Item {
     }
 
     private void renderMutationEffects(Graphics2D g2){
-
-        //cold
-        if(activeMutations.get("cold")){
-            g2.setColor(Configs.COLD);
-            g2.fillRect(sx - et, sy - et, q, q);
-        }
 
         //any dripping mutation
         for(int i = 0; i < Configs.DRIPPING_MUTATIONS.length; i++){
@@ -158,10 +184,19 @@ public class Seed extends Item {
 
         //any sparkle mutation
         for(int i = 0; i < Configs.SPARKLE_MUTATIONS.length; i++){
-//            if(activeMutations.get(Configs.SPARKLE_MUTATIONS[i])){
-//                //render sparkles
-//                break;
-//            }
+            if(activeMutations.get(Configs.SPARKLE_MUTATIONS[i])){
+                //render sparkles
+                break;
+            }
+        }
+
+        //colorful
+        if(activeMutations.get("colorful")){
+            renderColorfulMutation();
+        }
+        //party
+        else if(activeMutations.get("party")){
+            renderPartyMutation();
         }
 
         //ice (must be moist first AND NOT be cold)
@@ -172,6 +207,44 @@ public class Seed extends Item {
             g2.fillRect(sx - q, sy - q, ewidth, eheight);
         }
 
+    }
+
+    private void renderColorfulMutation() {
+
+        hueOffset += 0.005f;
+
+        if (hueOffset > 1.0f) {
+            hueOffset -= 1.0f;
+        }
+
+        Color startColor = Color.getHSBColor(hueOffset, 1.0f, 1.0f);
+
+        float endHue = hueOffset + 0.2f;
+        if (endHue > 1.0f) {
+            endHue -= 1.0f;
+        }
+        Color endColor = Color.getHSBColor(endHue, 1.0f, 1.0f);
+
+        sprite = Tools.gradientImage(sprite, startColor, endColor);
+    }
+
+    private void renderPartyMutation() {
+
+        frameCounter++;
+
+        if (frameCounter >= CHANGE_INTERVAL) {
+
+            frameCounter = 0;
+
+            colorIndex++;
+
+            if (colorIndex >= Configs.PARTY_COLORS.length) {
+                colorIndex = 0;
+            }
+
+            Color newColor = Configs.PARTY_COLORS[colorIndex];
+            sprite = Tools.tintImage(sprite, newColor);
+        }
     }
 
     @Override

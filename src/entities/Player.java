@@ -40,7 +40,7 @@ public class Player extends Entity{
         this.eheight = d;
         this.hitbox = new Rectangle(0, 0, h, trd);
         this.hitboxOffsetX = q;
-        this.hitboxOffsetY = q;
+        this.hitboxOffsetY = h;
         this.reach = new Rectangle(0, 0, h, h);
         this.sx = Configs.CENTER_X;
         this.sy = Configs.CENTER_Y;
