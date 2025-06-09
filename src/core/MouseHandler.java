@@ -10,6 +10,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+//        handleMouseClick(e.getX(), e.getY());
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
         handleMouseClick(e.getX(), e.getY());
     }
 
@@ -57,11 +62,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         } else {
             System.out.println("Clicked outside map bounds.");
         }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
     }
 
     @Override
