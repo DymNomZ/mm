@@ -8,16 +8,14 @@ import entities.Seed;
 public class DragonFruit extends Seed {
 
     public DragonFruit(){
-        super();
-        this.name = "Dragon Fruit";
-        this.cost = 45000;
-        this.sprite = Tools.gradientImage(
-                sprite,
-                Configs.DRAGONFRUIT_1, Configs.DRAGONFRUIT_2
+        super(
+                "Dragon Fruit", 45000, true,
+                Configs.SHOCKED_PINK_1, Configs.SHOCKED_GREEN_1,
+                Tools.gradientImage(
+                        SpriteLoader.DEBUG_ITEM,
+                        Configs.DRAGONFRUIT_1, Configs.DRAGONFRUIT_2
+                )
         );
-        this.isGradient = true;
-        this.shockedPrimary = Configs.SHOCKED_PINK_1;
-        this.shockedSecondary = Configs.SHOCKED_GREEN_1;
     }
 
     public DragonFruit(int x, int y){

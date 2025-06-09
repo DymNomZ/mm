@@ -8,13 +8,11 @@ import entities.Seed;
 public class Watermelon extends Seed {
 
     public Watermelon(){
-        super();
-        this.name = "Watermelon";
-        this.cost = 2500;
-        this.sprite = Tools.tintImage(sprite, Configs.WATERMELON);
-        this.isGradient = false;
-        this.shockedPrimary = Configs.SHOCKED_GREEN_2;
-        this.shockedSecondary = Configs.SHOCKED_GREEN_2;
+        super(
+                "Watermelon", 2500, false,
+                Configs.SHOCKED_GREEN_2, Configs.SHOCKED_GREEN_2,
+                Tools.tintImage(SpriteLoader.DEBUG_ITEM, Configs.WATERMELON)
+        );
     }
 
     public Watermelon(int x, int y){

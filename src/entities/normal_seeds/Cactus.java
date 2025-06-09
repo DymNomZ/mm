@@ -8,13 +8,11 @@ import entities.Seed;
 public class Cactus extends Seed {
 
     public Cactus(){
-        super();
-        this.name = "Cactus";
-        this.cost = 15000;
-        this.sprite = Tools.tintImage(sprite, Configs.CACTUS);
-        this.isGradient = false;
-        this.shockedPrimary = Configs.SHOCKED_GREEN_2;
-        this.shockedSecondary = Configs.SHOCKED_GREEN_2;
+        super(
+                "Cactus", 15000, false,
+                Configs.SHOCKED_GREEN_2, Configs.SHOCKED_GREEN_2,
+                Tools.tintImage(SpriteLoader.DEBUG_ITEM, Configs.CACTUS)
+        );
     }
 
     public Cactus(int x, int y){

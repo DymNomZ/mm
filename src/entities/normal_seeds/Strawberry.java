@@ -8,13 +8,11 @@ import entities.Seed;
 public class Strawberry extends Seed {
 
     public Strawberry(){
-        super();
-        this.name = "Strawberry";
-        this.cost = 50;
-        this.sprite = Tools.tintImage(sprite, Configs.STRAWBERRY);
-        this.isGradient = false;
-        this.shockedPrimary = Configs.SHOCKED_RED_2;
-        this.shockedSecondary = Configs.SHOCKED_RED_2;
+        super(
+                "Strawberry", 50, false,
+                Configs.SHOCKED_RED_2, Configs.SHOCKED_RED_2,
+                Tools.tintImage(SpriteLoader.DEBUG_ITEM, Configs.STRAWBERRY)
+        );
     }
 
     public Strawberry(int x, int y){

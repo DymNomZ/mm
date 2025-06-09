@@ -8,13 +8,11 @@ import entities.Seed;
 public class Pumpkin extends Seed {
 
     public Pumpkin(){
-        super();
-        this.name = "Pumpkin";
-        this.cost = 3000;
-        this.sprite = Tools.tintImage(sprite, Configs.PUMPKIN);
-        this.isGradient = false;
-        this.shockedPrimary = Configs.SHOCKED_ORANGE_2;
-        this.shockedSecondary = Configs.SHOCKED_ORANGE_2;
+        super(
+                "Pumpkin", 3000, false,
+                Configs.SHOCKED_ORANGE_2, Configs.SHOCKED_ORANGE_2,
+                Tools.tintImage(SpriteLoader.DEBUG_ITEM, Configs.PUMPKIN)
+        );
     }
 
     public Pumpkin(int x, int y){

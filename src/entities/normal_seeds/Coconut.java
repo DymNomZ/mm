@@ -8,13 +8,11 @@ import entities.Seed;
 public class Coconut extends Seed {
 
     public Coconut(){
-        super();
-        this.name = "Coconut";
-        this.cost = 6000;
-        this.sprite = Tools.tintImage(sprite, Configs.COCONUT);
-        this.isGradient = false;
-        this.shockedPrimary = Configs.SHOCKED_WHITE_1;
-        this.shockedSecondary = Configs.SHOCKED_WHITE_1;
+        super(
+                "Coconut", 6000, false,
+                Configs.SHOCKED_WHITE_1, Configs.SHOCKED_WHITE_1,
+                Tools.tintImage(SpriteLoader.DEBUG_ITEM, Configs.COCONUT)
+        );
     }
 
     public Coconut(int x, int y){

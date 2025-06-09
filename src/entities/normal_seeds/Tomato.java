@@ -8,13 +8,11 @@ import entities.Seed;
 public class Tomato extends Seed {
 
     public Tomato(){
-        super();
-        this.name = "Tomato";
-        this.cost = 800;
-        this.sprite = Tools.tintImage(sprite, Configs.TOMATO);
-        this.isGradient = false;
-        this.shockedPrimary = Configs.SHOCKED_RED_2;
-        this.shockedSecondary = Configs.SHOCKED_RED_2;
+        super(
+                "Tomato", 800, false,
+                Configs.SHOCKED_RED_2, Configs.SHOCKED_RED_2,
+                Tools.tintImage(SpriteLoader.DEBUG_ITEM, Configs.TOMATO)
+        );
     }
 
     public Tomato(int x, int y){

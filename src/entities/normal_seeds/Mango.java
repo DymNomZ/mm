@@ -8,13 +8,11 @@ import entities.Seed;
 public class Mango extends Seed {
 
     public Mango(){
-        super();
-        this.name = "Mango";
-        this.cost = 100000;
-        this.sprite = Tools.tintImage(sprite, Configs.MANGO);
-        this.isGradient = false;
-        this.shockedPrimary = Configs.SHOCKED_YELLOW_2;
-        this.shockedSecondary = Configs.SHOCKED_YELLOW_2;
+        super(
+                "Mango", 100000, false,
+                Configs.SHOCKED_YELLOW_2, Configs.SHOCKED_YELLOW_2,
+                Tools.tintImage(SpriteLoader.DEBUG_ITEM, Configs.MANGO)
+        );
     }
 
     public Mango(int x, int y){

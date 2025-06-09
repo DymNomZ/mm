@@ -8,13 +8,11 @@ import entities.Seed;
 public class Blueberry extends Seed {
 
     public Blueberry(){
-        super();
-        this.name = "Blueberry";
-        this.cost = 400;
-        this.sprite = Tools.tintImage(sprite, Configs.BLUEBERRY);
-        this.isGradient = false;
-        this.shockedPrimary = Configs.SHOCKED_BLUE_1;
-        this.shockedSecondary = Configs.SHOCKED_BLUE_1;
+        super(
+                "Blueberry", 400, false,
+                Configs.SHOCKED_BLUE_1, Configs.SHOCKED_BLUE_1,
+                Tools.tintImage(SpriteLoader.DEBUG_ITEM, Configs.BLUEBERRY)
+        );
     }
 
     public Blueberry(int x, int y){

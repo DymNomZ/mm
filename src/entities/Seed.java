@@ -6,6 +6,7 @@ import core.SpriteLoader;
 import core.Tools;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Map;
@@ -34,16 +35,28 @@ public class Seed extends Item {
     protected Color shockedPrimary, shockedSecondary;
     protected String currentColoredMutation;
 
-    public Seed() {
+    public Seed(
+            String name, int cost, boolean isGradient,
+            Color shockedPrimary, Color shockedSecondary,
+            BufferedImage sprite
+    ) {
         this.randomGenerator = new Random();
         this.activeMutations = new HashMap<>();
         this.currentMutations = new ArrayList<>();
-        this.sprite = SpriteLoader.DEBUG_ITEM;
+        this.sb  = new StringBuilder();
+
         this.ewidth = sSize;
         this.eheight = sSize;
         this.currentColoredMutation = "";
         this.freeString = "";
-        this.sb  = new StringBuilder();
+
+        this.name = name;
+        this.cost = cost;
+        this.isGradient = isGradient;
+        this.shockedPrimary = shockedPrimary;
+        this.shockedSecondary = shockedSecondary;
+        this.sprite = sprite;
+
         attemptRandomMutation();
         initializeMutations();
     }
@@ -59,7 +72,7 @@ public class Seed extends Item {
         // Higher chance of NO mutation
         double noMutationChance = 0.50; // 50% chance of NO mutation
         if (randomGenerator.nextDouble() < noMutationChance) {
-//             System.out.println(this.name + " got no mutation.");
+             System.out.println(this.name + " got no mutation.");
             return; // Exit without applying any mutation
         }
 
@@ -111,7 +124,7 @@ public class Seed extends Item {
     private void applyMutation(String mutationName) {
         activeMutations.put(mutationName, true);
         hasMutation = true;
-//        System.out.println(this.name + " mutated into " + mutationName);
+        System.out.println(this.name + " mutated into " + mutationName);
         currentMutations.add(mutationName);
         mutateSprite(mutationName);
     }
@@ -131,20 +144,20 @@ public class Seed extends Item {
 
     private void mutateSprite(String mutationName){
 
-        switch (mutationName) {
-            case "candy" -> gradientMutation(
-                    Configs.CANDY_1, Configs.CANDY_2,
-                    Configs.SHOCKED_RED_1, Configs.SHOCKED_WHITE_1
-            );
-            case "galactic" -> gradientMutation(
-                    Configs.GALACTIC_1, Configs.GALACTIC_2,
-                    Configs.SHOCKED_BLUE_1, Configs.SHOCKED_PINK_1
-            );
-            case "magical" -> gradientMutation(
-                    Configs.MAGICAL_1, Configs.MAGICAL_2,
-                    Configs.SHOCKED_BLUE_1, Configs.SHOCKED_WHITE_1
-            );
-        }
+//        switch (mutationName) {
+//            case "candy" -> gradientMutation(
+//                    Configs.CANDY_1, Configs.CANDY_2,
+//                    Configs.SHOCKED_RED_1, Configs.SHOCKED_WHITE_1
+//            );
+//            case "galactic" -> gradientMutation(
+//                    Configs.GALACTIC_1, Configs.GALACTIC_2,
+//                    Configs.SHOCKED_BLUE_1, Configs.SHOCKED_PINK_1
+//            );
+//            case "magical" -> gradientMutation(
+//                    Configs.MAGICAL_1, Configs.MAGICAL_2,
+//                    Configs.SHOCKED_BLUE_1, Configs.SHOCKED_WHITE_1
+//            );
+//        }
 
         if(mutationName.equals("energized")){
             if(!currentColoredMutation.isEmpty()){
