@@ -17,6 +17,8 @@ public class Seed extends Item {
     protected Random randomGenerator;
     public String name;
     public int cost;
+    private int sSize = Configs.SEED_SIZE;
+    private int sOff = Configs.SEED_OFFSET;
     public boolean hasMutation, isGradient;
     public Color shockedPrimary, shockedSecondary;
     public String currentColoredMutation;
@@ -29,8 +31,8 @@ public class Seed extends Item {
         this.randomGenerator = new Random();
         this.activeMutations = new HashMap<>();
         this.sprite = SpriteLoader.DEBUG_ITEM;
-        this.ewidth = Configs.SEED_SIZE;
-        this.eheight = Configs.SEED_SIZE;
+        this.ewidth = sSize;
+        this.eheight = sSize;
         this.currentColoredMutation = "";
         initializeMutations();
     }
@@ -204,7 +206,7 @@ public class Seed extends Item {
                 && !activeMutations.get("cold")){
             activeMutations.put("moist", false);
             g2.setColor(Configs.ICE);
-            g2.fillRect(sx - q, sy - q, ewidth, eheight);
+            g2.fillRect(sx - sOff, sy - sOff, ewidth, eheight);
         }
 
     }
@@ -257,21 +259,24 @@ public class Seed extends Item {
         int psx = Game.player.sx;
         int psy = Game.player.sy;
 
-        this.sx = (int) (x - px + psx);
-        this.sy = (int) (y - py + psy);
+        sx = (int) (x - px + psx);
+        sy = (int) (y - py + psy);
+
+        sx -= sOff;
+        sy -= sOff;
 
         boolean isHorizontallyVisible = (x + ts > px - psx) && (x < px - psx + Configs.SCREEN_WIDTH);
         boolean isVerticallyVisible = (y + ts > py - psy) && (y < py - psy + Configs.SCREEN_HEIGHT);
 
         if (isHorizontallyVisible && isVerticallyVisible) {
-            g2.drawImage(sprite, sx - q, sy - q, ewidth, eheight, null);
+            g2.drawImage(sprite, sx, sy, ewidth, eheight, null);
 
             //render effects
             renderMutationEffects(g2);
 
             //Debug draw item's bounding box on screen
             g2.setColor(Color.ORANGE);
-            g2.drawRect(sx - q, sy - q, ewidth, eheight);
+            g2.drawRect(sx, sy, ewidth, eheight);
         }
     }
 

@@ -26,7 +26,8 @@ public class Configs {
     public static final int THIRD = TILE_SIZE + HALF;
     public static final int EIGHTH = QUARTER / 2;
 
-    public static final int SEED_SIZE = HALF;
+    public static final int SEED_SIZE = QUARTER;
+    public static final int SEED_OFFSET = EIGHTH;
 
     public static String[] MUTATION_NAMES = {
             "moist", "cold", "brown", "lunar", "toxic",
