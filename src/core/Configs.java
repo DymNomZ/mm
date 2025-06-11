@@ -143,6 +143,7 @@ public class Configs {
 
     public static final Color DIALOGUE_BOX = new Color(20, 20, 20, 191);
     public static final Color HOVER_COLOR = new Color(255, 203, 87, 255);
+    public static final Color TRANSPARENT = new Color(68, 68, 68, 64);
 
     public static Color[] TOOLTIP_COLORS = {
             MOIST, COLD_2, BROWN, LUNAR, TOXIC,

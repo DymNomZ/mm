@@ -64,6 +64,7 @@ public class Game extends JPanel implements Runnable{
 
     public void start(){
         Configs.init();
+        GUI.init();
         gameThread.start();
     }
 
@@ -98,6 +99,12 @@ public class Game extends JPanel implements Runnable{
         //logic
     }
 
+    private void handleHovers(){
+
+        updateHoveredSeed();
+
+    }
+
     private void update(){
 
         player.move();
@@ -108,7 +115,7 @@ public class Game extends JPanel implements Runnable{
             st.handleChecks();
         }
 
-        updateHoveredSeed();
+        handleHovers();
     }
 
     public void paintComponent(Graphics g){
@@ -124,6 +131,8 @@ public class Game extends JPanel implements Runnable{
         }
 
         player.render(g2);
+
+        GUI.render(g2);
 
         Tools.renderSeedTooltip(g2, hoveredSeed);
 

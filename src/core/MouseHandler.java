@@ -8,14 +8,21 @@ import java.awt.event.MouseMotionListener;
 
 public class MouseHandler implements MouseListener, MouseMotionListener {
 
+    public Tile clickedTile;
+
     @Override
     public void mouseClicked(MouseEvent e) {
-//        handleMouseClick(e.getX(), e.getY());
+        singleClicks(e.getX(), e.getY());
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         handleMouseClick(e.getX(), e.getY());
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
     }
 
     @Override
@@ -26,6 +33,17 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     @Override
     public void mouseMoved(MouseEvent e) {
         Game.mousePosition.setLocation(e.getX(), e.getY());
+    }
+
+    private void singleClicks(int mx, int my){
+        GUI.handleClick(mx, my);
+    }
+
+    private void rapidClicks(int mx, int my){
+
+        //call player plant seed function
+        Game.player.plantSeed(mx, my, clickedTile);
+
     }
 
     private void handleMouseClick(int screenX, int screenY) {
@@ -46,13 +64,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 //        System.out.println("World Coords: (" + mx + ", " + my + ") -- Calculated using player world (int): (" + px + ", " + py + ")");
 //        System.out.println("Clicked Tile Coords (Col, Row): (" + tileCol + ", " + tileRow + ")");
 
-        //call player plant seed function
-        Game.player.plantSeed(mx, my);
-
         if (tileCol >= 0 && tileCol < Game.mapConstructor.getMapColumns() &&
                 tileRow >= 0 && tileRow < Game.mapConstructor.getMapRows()) {
 
-            Tile clickedTile = Game.mapConstructor.getTile(tileCol, tileRow);
+            clickedTile = Game.mapConstructor.getTile(tileCol, tileRow);
             if (clickedTile != null) {
 //                System.out.println("Clicked on Tile: " + clickedTile.name + " (Solid: " + clickedTile.isSolid + ")");
 
@@ -62,11 +77,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         } else {
             System.out.println("Clicked outside map bounds.");
         }
-    }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
+        rapidClicks(mx, my);
     }
 
     @Override

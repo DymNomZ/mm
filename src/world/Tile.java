@@ -37,6 +37,24 @@ public class Tile {
         return image;
     }
 
+    private static String[] DIRT_TILES = {
+            "dirt-00.png", "dirt-01.png", "dirt-02.png",
+            "dirt-03.png", "dirt-04.png", "dirt-05.png",
+            "dirt-06.png", "dirt-07.png", "dirt-08.png",
+            "dirt-09.png", "dirt-10.png", "dirt-11.png",
+    };
+
+    public static boolean isDirt(Tile tile){
+
+        if(tile == null) return false;
+
+        for(String dirt : DIRT_TILES){
+            if(tile.name.equals(dirt)) return true;
+        }
+
+        return false;
+    }
+
     @Override
     public String toString(){
         return name;

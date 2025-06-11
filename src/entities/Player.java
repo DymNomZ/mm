@@ -2,6 +2,7 @@ package entities;
 
 import core.*;
 import entities.normal_seeds.Carrot;
+import world.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -162,7 +163,10 @@ public class Player extends Entity{
 //        }
     }
 
-    public void plantSeed(int x, int y){
+    public void plantSeed(int x, int y, Tile tile){
+
+        if(!Tile.isDirt(tile)) return;
+
         plantedSeeds.add(
                 Tools.giveRandomSeed(x, y)
         );
