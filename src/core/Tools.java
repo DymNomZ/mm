@@ -1,5 +1,7 @@
 package core;
 
+import entities.Entity;
+import entities.Player;
 import entities.Seed;
 import entities.normal_seeds.*;
 import world.Door;
@@ -24,6 +26,23 @@ public class Tools {
 
     public static int getRandomY(){
         return rand.nextInt(0, maxY);
+    }
+
+    public static boolean isTouch(Entity e){
+
+        Player p = Game.player;
+
+        int pl = p.reach.x;
+        int pr = p.reach.x + p.reach.width;
+        int pt = p.reach.y;
+        int pb = p.reach.y + p.reach.height;
+
+        int il = (int)e.x;
+        int ir = (int)(e.x + e.ewidth);
+        int it = (int)e.y;
+        int ib = (int)(e.y + e.eheight);
+
+        return !(pl >= ir || pr <= il || pt >= ib || pb <= it);
     }
 
     public static BufferedImage tintImage(BufferedImage image, Color tintColor) {
@@ -136,6 +155,51 @@ public class Tools {
         }
     }
 
+    static int V_PADDING = 10;
+    static int H_PADDING = 20;
+    static int LINE_SPACING = 3;
+
+    private static void renderDialogueBox(
+            Graphics2D g2, int x, int y, int width, int height
+    ){
+
+        g2.setColor(Configs.DIALOGUE_BOX);
+        g2.fillRect(x, y, width, height);
+        g2.setColor(Color.DARK_GRAY);
+
+    }
+
+    private static void renderWord(
+            Graphics2D g2, String word, Color color, int x, int y
+    ){
+        g2.setColor(color);
+        g2.drawString(word, x, y);
+    }
+
+    public static void renderWordBox(Graphics2D g2, Entity e, String word){
+
+        Font tooltipFont = Configs.COMIC_SANS;
+        g2.setFont(tooltipFont);
+        FontMetrics fm = g2.getFontMetrics();
+
+        int wordWidth = fm.stringWidth(word) + (2 * H_PADDING);
+        int wordHeight = fm.getHeight() + (2 * V_PADDING);
+
+        int cx = (e.sx + (e.ewidth / 2)) - (wordWidth / 2);
+        int cy = (e.sy + (e.eheight / 3));
+
+        int boxBaseX = cx;
+        int boxBaseY = cy;
+
+        renderDialogueBox(g2, boxBaseX, boxBaseY, wordWidth, wordHeight);
+
+        int currentY = boxBaseY + fm.getAscent() + V_PADDING;
+        int currentX = boxBaseX + H_PADDING;
+
+        renderWord(g2, word, Color.WHITE, currentX, currentY);
+
+    }
+
     public static void renderSeedTooltip(Graphics2D g2, Seed hoveredSeed){
 
         if (hoveredSeed != null && !hoveredSeed.hide) {
@@ -149,10 +213,7 @@ public class Tools {
                     = hoveredSeed.getActiveMutationDisplayStrings();
 
             // --- Calculate dimensions for the background box ---
-            int V_PADDING = 3;
-            int H_PADDING = 5;
             int PLUS_SIGN_WIDTH = fm.stringWidth(" + ");
-            int LINE_SPACING_IF_MULTILINE_NEEDED = 3; // Only if mutations wrap
 
             // Width of the name line
             int nameLineWidth = fm.stringWidth(seedName);
@@ -168,6 +229,7 @@ public class Tools {
                 }
             }
 
+            //compare which is longer for rectangle basis
             int maxLineWidth = Math.max(nameLineWidth, mutationsLineWidth);
             int totalTooltipWidth = maxLineWidth + (2 * H_PADDING);
 
@@ -177,30 +239,28 @@ public class Tools {
             }
 
             int totalTooltipHeight = (numberOfLinesForTooltip * fm.getHeight()) +
-                    ((numberOfLinesForTooltip - 1) * LINE_SPACING_IF_MULTILINE_NEEDED) +
+                    ((numberOfLinesForTooltip - 1) * LINE_SPACING) +
                     (2 * V_PADDING);
 
-
+            //positioning for the box
             int boxBaseX = Game.mousePosition.x + 15;
             int boxBaseY = Game.mousePosition.y + 5;
 
-            // Draw background box
-            g2.setColor(Configs.TOOLTIP_BACKGROUND);
-            g2.fillRect(boxBaseX, boxBaseY, totalTooltipWidth, totalTooltipHeight);
-            g2.setColor(Color.DARK_GRAY);
-            g2.drawRect(boxBaseX, boxBaseY, totalTooltipWidth, totalTooltipHeight);
+            renderDialogueBox(
+                    g2, boxBaseX, boxBaseY,
+                    totalTooltipWidth, totalTooltipHeight
+            );
 
             // --- Draw Text ---
             int currentY = boxBaseY + fm.getAscent() + V_PADDING;
 
             // 1. Draw Seed Name (Centered)
-            g2.setColor(Color.WHITE); // Color for seed name
             int nameLineX = boxBaseX + (totalTooltipWidth - nameLineWidth) / 2;
-            g2.drawString(seedName, nameLineX, currentY);
+            renderWord(g2, seedName, Color.WHITE, nameLineX, currentY);
 
             // 2. Draw Mutations Line (if any)
             if (!mutationDisplaySegments.isEmpty()) {
-                currentY += fm.getHeight() + LINE_SPACING_IF_MULTILINE_NEEDED; // Move to next line
+                currentY += fm.getHeight() + LINE_SPACING; // Move to next line
                 int currentX = boxBaseX + H_PADDING; // Starting X for the mutations line (left-aligned)
 
                 for (int k = 0; k < mutationDisplaySegments.size(); k++) {
@@ -213,15 +273,13 @@ public class Tools {
                             = Configs.TOOLTIP_COLORS_MAP.getOrDefault(
                             rawMutationName, Color.LIGHT_GRAY
                     );
-                    g2.setColor(segmentColor);
-                    g2.drawString(segmentText, currentX, currentY);
+                    renderWord(g2, segmentText, segmentColor, currentX, currentY);
 
                     currentX += fm.stringWidth(segmentText); // Move X for the next segment
 
                     // Draw " + " if it's not the last mutation segment
                     if (k < mutationDisplaySegments.size() - 1) {
-                        g2.setColor(Color.WHITE); // Color for the " + " sign
-                        g2.drawString(" + ", currentX, currentY);
+                        renderWord(g2, " + ", Color.WHITE, currentX, currentY);
                         currentX += PLUS_SIGN_WIDTH;
                     }
                 }

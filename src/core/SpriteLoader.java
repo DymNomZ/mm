@@ -76,6 +76,18 @@ public class SpriteLoader {
         }
     }
 
+    public static BufferedImage STALL_SHOP;
+    public static BufferedImage STALL_SELL;
+
+    static{
+        try{
+            STALL_SHOP = ImageIO.read(SpriteLoader.class.getResourceAsStream("/textures/stalls/shop-1.png"));
+            STALL_SELL = ImageIO.read(SpriteLoader.class.getResourceAsStream("/textures/stalls/sell-1.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static BufferedImage DEBUG_DOOR;
 
     static{

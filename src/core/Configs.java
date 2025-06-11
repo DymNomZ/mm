@@ -31,6 +31,9 @@ public class Configs {
     public static final int SEED_SIZE = QUARTER;
     public static final int SEED_OFFSET = EIGHTH;
 
+    public static final int STALL_SIZE = TILE_SIZE * 4;
+    public static final int STALL_OFFSET = STALL_SIZE;
+
     public static String[] MUTATION_NAMES = {
             "moist", "cold", "brown", "lunar", "toxic",
             "fertilized", "bloodlunar", "laser", "mapleglazed", "charred", "godly",
@@ -138,7 +141,7 @@ public class Configs {
     public static final Color MAGICAL_1 = new Color(6, 118, 255, 255);
     public static final Color MAGICAL_2 = new Color(255, 255, 255, 255);
 
-    public static final Color TOOLTIP_BACKGROUND = new Color(20, 20, 20, 191);
+    public static final Color DIALOGUE_BOX = new Color(20, 20, 20, 191);
 
     public static Color[] TOOLTIP_COLORS = {
             MOIST, COLD_2, BROWN, LUNAR, TOXIC,

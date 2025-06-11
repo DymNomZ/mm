@@ -155,11 +155,11 @@ public class Player extends Entity{
 
     public void handleInteractions(){
 
-        if(!keyHandler.fPressed) return;
+        if(!keyHandler.ePressed) return;
 
-        if(map.isColliding(reach)){
-            //room for creativity!
-        }
+//        if(map.isColliding(reach)){
+//            //room for creativity!
+//        }
     }
 
     public void plantSeed(int x, int y){

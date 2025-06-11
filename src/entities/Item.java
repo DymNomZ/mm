@@ -10,11 +10,6 @@ public class Item extends Entity {
     private MouseHandler mouseHandler;
     public boolean hide;
 
-    public int ts = Configs.TILE_SIZE;
-    public int h = Configs.HALF;
-    public int q = Configs.QUARTER;
-    public int et = Configs.EIGHTH;
-
     public Item(){
         this.keyHandler = Game.keyHandler;
         this.mouseHandler = Game.mouseHandler;
@@ -27,30 +22,9 @@ public class Item extends Entity {
         this.y = y;
     }
 
-    public boolean isTouch(
-            int il, int ir, int it, int ib,
-            int pl, int pr, int pt, int pb
-    ){
-
-        return !(pl >= ir || pr <= il || pt >= ib || pb <= it);
-    }
-
     public void itemTouch(Player p){
 
-        int il = (int)x;
-        int ir = (int)(x + ewidth);
-        int it = (int)y;
-        int ib = (int)(y + eheight);
-
-        int pl = p.reach.x;
-        int pr = p.reach.x + p.reach.width;
-        int pt = p.reach.y;
-        int pb = p.reach.y + p.reach.height;
-
-        if(
-            keyHandler.ePressed &&
-            isTouch(il, ir, it, ib, pl, pr, pt, pb)
-        ){
+        if(keyHandler.ePressed && Tools.isTouch(this)){
             hide = true;
         }
     }
