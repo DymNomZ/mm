@@ -69,28 +69,13 @@ public class Game extends JPanel implements Runnable{
 
     public void updateHoveredSeed() {
 
-        int px = (int) player.x;
-        int py = (int) player.y;
-        int psx = player.sx;
-        int psy = player.sy;
-
-        int mx = px - psx + mousePosition.x;
-        int my = py - psy + mousePosition.y;
-
         Seed currentlyFoundSeed = null;
 
         for (int i = player.plantedSeeds.size() - 1; i >= 0; i--) {
             Seed seed = player.plantedSeeds.get(i);
             if (seed.hide) continue; // Skip hidden seeds
 
-            int seedWorldX = (int) seed.x - et;
-            int seedWorldY = (int) seed.y - et;
-            int seedWidth = seed.ewidth;
-            int seedHeight = seed.eheight;
-
-            Rectangle seedBounds = new Rectangle(seedWorldX, seedWorldY, seedWidth, seedHeight);
-
-            if (seedBounds.contains(mx, my)) {
+            if (Tools.isHovered(seed)) {
                 currentlyFoundSeed = seed;
                 break; // Found the topmost seed, no need to check others underneath
             }

@@ -17,6 +17,12 @@ public class Tools {
     static int maxX = MapConstructor.mapWidth;
     static int maxY = MapConstructor.mapHeight;
 
+    public static int ts = Configs.TILE_SIZE;
+    public static int h = Configs.HALF;
+    public int q = Configs.QUARTER;
+    public int trd = Configs.THIRD;
+    public static int et = Configs.EIGHTH;
+
     //world tiles
     public static Door openDoor = new Door();
 
@@ -43,6 +49,27 @@ public class Tools {
         int ib = (int)(e.y + e.eheight);
 
         return !(pl >= ir || pr <= il || pt >= ib || pb <= it);
+    }
+
+    public static boolean isHovered(Entity e){
+
+        int px = (int) Game.player.x;
+        int py = (int) Game.player.y;
+        int psx = Game.player.sx;
+        int psy = Game.player.sy;
+
+        int mx = px - psx + Game.mousePosition.x;
+        int my = py - psy + Game.mousePosition.y;
+
+        int ex = (int) e.x - et;
+        int ey = (int) e.y - et;
+        int ew = e.ewidth;
+        int eh = e.eheight;
+
+        Rectangle entityBounds = new Rectangle(ex, ey, ew, eh);
+
+        return entityBounds.contains(mx, my);
+
     }
 
     public static BufferedImage tintImage(BufferedImage image, Color tintColor) {
@@ -197,6 +224,70 @@ public class Tools {
         int currentX = boxBaseX + H_PADDING;
 
         renderWord(g2, word, Color.WHITE, currentX, currentY);
+
+    }
+
+    public static boolean isHoveredOnScreen(int sx, int sy, int width, int height){
+
+        int mx = Game.mousePosition.x;
+        int my = Game.mousePosition.y;
+
+        Rectangle bounds = new Rectangle(sx, sy, width, height);
+
+        return bounds.contains(mx, my);
+    }
+
+    public static void renderMultilineBox(Graphics2D g2, Entity e, String[] words){
+
+        Font tooltipFont = Configs.COMIC_SANS;
+        g2.setFont(tooltipFont);
+        FontMetrics fm = g2.getFontMetrics();
+
+        //iterate and get the longest word
+        int boxWidth = 0;
+        int longWordWidth = 0;
+
+        for (String word : words) {
+            boxWidth = Math.max(boxWidth, fm.stringWidth(word));
+        }
+
+        int wordHeight = fm.getHeight();
+        longWordWidth = boxWidth;
+        boxWidth += (2 * H_PADDING);
+
+        int numberOfLines = words.length;
+
+        int boxHeight = (numberOfLines * wordHeight) +
+                ((numberOfLines - 1) * LINE_SPACING) +
+                (2 * V_PADDING);
+
+        int cx = (e.sx + (e.ewidth / 2)) + h;
+        int cy = (e.sy + (e.eheight / 2)) + h;
+
+        int boxBaseX = cx;
+        int boxBaseY = cy;
+
+        renderDialogueBox(
+                g2, boxBaseX, boxBaseY,
+                boxWidth, boxHeight
+        );
+
+        int currentY = boxBaseY + fm.getAscent() + V_PADDING;
+        int currentX = boxBaseX + H_PADDING;
+
+        Color color;
+
+        for(String word : words){
+
+            if(isHoveredOnScreen(currentX, currentY - wordHeight, longWordWidth, wordHeight)){
+                color = Configs.HOVER_COLOR;
+                //logic here!
+            }
+            else color = Color.WHITE;
+
+            renderWord(g2, word, color, currentX, currentY);
+            currentY += wordHeight + LINE_SPACING;
+        }
 
     }
 

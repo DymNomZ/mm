@@ -13,6 +13,7 @@ public abstract class Stall extends Entity{
     private int stOff = Configs.STALL_OFFSET;
 
     private boolean playerIsNear = false;
+    private boolean playerIsCommunicating = false;
 
     public String name;
 
@@ -29,7 +30,7 @@ public abstract class Stall extends Entity{
         this.name = name;
     }
 
-    protected abstract void stallInteractSequence();
+    protected abstract void stallInteractSequence(Graphics2D g2);
 
     public void handleChecks(){
 
@@ -37,14 +38,16 @@ public abstract class Stall extends Entity{
 
             playerIsNear = true;
 
-            if(keyHandler.ePressed ){
-                //logic here
-//                System.out.println(this);
-                stallInteractSequence();
+            if(keyHandler.ePressed){
+                playerIsCommunicating = true;
+            }
+            else{
+
             }
         }
         else{
             playerIsNear = false;
+            playerIsCommunicating = false;
         }
     }
 
@@ -65,10 +68,15 @@ public abstract class Stall extends Entity{
         g2.drawImage(sprite, sx, sy, stSize, stSize, null);
 
         if(playerIsNear){
-            Tools.renderWordBox(
-                    g2, this,
-                    "Talk to " + name + " (Press E)"
-            );
+            if(playerIsCommunicating){
+                stallInteractSequence(g2);
+            }
+            else{
+                Tools.renderWordBox(
+                        g2, this,
+                        "Talk to " + name + " (Press E)"
+                );
+            }
         }
 
         //debug render bounding box
@@ -86,7 +94,13 @@ public abstract class Stall extends Entity{
             );
         }
 
-        public void stallInteractSequence(){
+        public void stallInteractSequence(Graphics2D g2){
+
+            Tools.renderWordBox(
+                    g2, this, Dialogues.USAGI
+            );
+
+            Tools.renderMultilineBox(g2, this, Dialogues.SELL_DIALOGUES);
 
         }
     }
@@ -100,7 +114,13 @@ public abstract class Stall extends Entity{
             );
         }
 
-        public void stallInteractSequence(){
+        public void stallInteractSequence(Graphics2D g2){
+
+            Tools.renderWordBox(
+                    g2, this, Dialogues.HACHIWARE
+            );
+
+            Tools.renderMultilineBox(g2, this, Dialogues.SELL_DIALOGUES);
 
         }
     }
