@@ -18,28 +18,6 @@ public class GUI {
     private static boolean finishedLoading = false;
 
     private static void renderElement(
-            Graphics2D g2, int orientation,
-            int number, int sx, int sy, int width, int height, int spacing
-    ){
-        //temporary until hotbar slot texture is made
-        g2.setColor(Configs.TRANSPARENT);
-        for(int i = 0; i < number; i++){
-
-            if(Tools.isHoveredOnScreen(sx, sy, width, height)){
-                g2.setColor(Configs.SHOCKED_WHITE_1);
-            }
-            else{
-                g2.setColor(Configs.TRANSPARENT);
-            }
-
-            g2.fillRect(sx, sy, width, height);
-
-            if(orientation == 1) sx += spacing;
-            else sy += spacing;
-        }
-    }
-
-    private static void renderElement(
             Graphics2D g2, int sx, int sy, int width, int height
     ){
         //temporary until hotbar slot texture is made
@@ -54,34 +32,10 @@ public class GUI {
     private static int hotbarWidth =
             (hotbarSlots * hotbarSlotWidth) + (hotbarSlots - 1 * hotbarSlotGap);
 
-    private static void hotbar(Graphics2D g2){
-
-        int sx = (Configs.SCREEN_WIDTH / 2) - (hotbarWidth / 2) - ts;
-        int sy = Configs.SCREEN_HEIGHT - hotbarSlotHeight - ts;
-
-        renderElement(
-                g2, 1, hotbarSlots, sx, sy,
-                hotbarSlotWidth, hotbarSlotHeight,
-                hotbarSlotWidth + hotbarSlotGap
-        );
-    }
-
     private static int topRightButtons = 3;
     private static int topRightButtonWidth = ts;
     private static int topRightButtonHeight = ts;
     private static int topRightButtonGap = q;
-
-    private static void topRightButtons(Graphics2D g2){
-
-        int sx = h;
-        int sy = h;
-
-        renderElement(
-                g2, 1, topRightButtons, sx, sy,
-                topRightButtonWidth, topRightButtonHeight,
-                topRightButtonWidth + topRightButtonGap
-        );
-    }
 
     private static int inventoryTabsNum = 5;
     private static int inventoryTabWidth = ts;
@@ -90,17 +44,6 @@ public class GUI {
     private static int inventoryTabsHeight =
             (inventoryTabsNum * inventoryTabHeight) +
                     ((inventoryTabsNum - 1) * inventoryTabGap);
-
-
-    private static void inventoryTabs(Graphics2D g2, int sx, int sy){
-
-        renderElement(
-                g2, 2, inventoryTabsNum, sx, sy,
-                inventoryTabWidth, inventoryTabHeight,
-                inventoryTabHeight + inventoryTabGap
-        );
-
-    }
 
     public static boolean inventoryClicked = false;
 
@@ -120,7 +63,9 @@ public class GUI {
         int sx = (Configs.SCREEN_WIDTH / 2) - (hotbarWidth / 2) - ts;
         int sy = Configs.SCREEN_HEIGHT - inventoryTabsHeight - (ts * 2) - inventoryTabGap;
 
-        inventoryTabs(g2, sx, sy);
+        for(Square sq : inventoryTabsList){
+            sq.render(g2);
+        }
 
         //shift
         sx += inventoryTabWidth + inventoryTabGap;
@@ -133,31 +78,44 @@ public class GUI {
 
 //        System.out.println(mx + " " + my);
 
-        Rectangle r;
-
-        for(int i = 0; i < buttons.size(); i++){
-
-            r = buttons.get(i);
-
-            if(r.contains(mx, my)){
+        for(Square sq : topRightButtonsList){
+            if(sq.contains(mx, my)){
                 //check which button
 
-                if(i == 1){
+                if(sq.label.equals("inventory")){
                     inventoryClicked = !inventoryClicked;
                 }
             }
         }
+
     }
 
+    public static ArrayList<Square> topRightButtonsList = new ArrayList<>();
+    public static ArrayList<Square> hotBarSlotsList = new ArrayList<>();
+    public static ArrayList<Square> inventoryTabsList = new ArrayList<>();
+
+    private static String[] topRightButtonNames = { "menu", "inventory", "cosmetics"};
+    private static String[] inventoryTabsNames = {
+            "all items", "seeds", "fruits", "gears", "pet items"
+    };
+    private static String[] emptyList = {};
+
     private static void saveButtonCoords(
-            int orientation,
+            int orientation, ArrayList<Square> list, String[] nameList,
             int number, int sx, int sy, int width, int height, int spacing
     ){
         for(int i = 0; i < number; i++){
 
-            buttons.add(
-                    new Rectangle(sx, sy, width, height)
-            );
+            if(nameList.length != 0){
+                list.add(
+                        new Square(sx, sy, width, height, nameList[i])
+                );
+            }
+            else{
+                list.add(
+                        new Square(sx, sy, width, height, "no label")
+                );
+            }
 
             if(orientation == 1) sx += spacing;
             else sy += spacing;
@@ -170,7 +128,7 @@ public class GUI {
         int sy = h;
 
         saveButtonCoords(
-                1, topRightButtons, sx, sy,
+                1, topRightButtonsList, topRightButtonNames, topRightButtons, sx, sy,
                 topRightButtonWidth, topRightButtonHeight,
                 topRightButtonWidth + topRightButtonGap
         );
@@ -179,23 +137,20 @@ public class GUI {
         sy = Configs.SCREEN_HEIGHT - hotbarSlotHeight - ts;
 
         saveButtonCoords(
-                1, hotbarSlots, sx, sy,
+                1, hotBarSlotsList, emptyList, hotbarSlots, sx, sy,
                 hotbarSlotWidth, hotbarSlotHeight,
                 hotbarSlotWidth + hotbarSlotGap
         );
 
         sx = (Configs.SCREEN_WIDTH / 2) - (hotbarWidth / 2) - ts;
-        sy = Configs.SCREEN_HEIGHT - inventoryTabsHeight - (ts * 4);
+        sy = Configs.SCREEN_HEIGHT - inventoryTabsHeight - (ts * 2) - inventoryTabGap;
 
         saveButtonCoords(
-                2, inventoryTabsNum, sx, sy,
+                2, inventoryTabsList, inventoryTabsNames, inventoryTabsNum, sx, sy,
                 inventoryTabWidth, inventoryTabHeight,
                 inventoryTabHeight + inventoryTabGap
         );
 
-//        for(Rectangle r : buttons){
-//            System.out.println(r.x + " " + r.y);
-//        }
     }
 
     public static void init(){
@@ -209,11 +164,15 @@ public class GUI {
 
     public static void render(Graphics2D g2){
 
-        topRightButtons(g2);
+        for(Square sq : topRightButtonsList){
+            sq.render(g2);
+        }
 
         inventory(g2);
 
-        hotbar(g2);
+        for(Square sq : hotBarSlotsList){
+            sq.render(g2);
+        }
 
     }
 }

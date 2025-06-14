@@ -94,9 +94,17 @@ public class Game extends JPanel implements Runnable{
         // The tooltip drawing will use the latest mousePosition anyway.
     }
 
-    private void checkCollisions(){
+    public static boolean checkCollisions(Rectangle hitbox){
 
-        //logic
+        if(!mapConstructor.isColliding(hitbox)){
+            return true;
+        }
+
+        //check stalls
+
+
+        return false;
+
     }
 
     private void handleHovers(){
@@ -158,7 +166,6 @@ public class Game extends JPanel implements Runnable{
 
             if(delta >= 1){
                 update();
-                checkCollisions();
                 repaint();
                 delta--;
                 drawCount++;

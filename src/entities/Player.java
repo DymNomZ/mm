@@ -245,7 +245,7 @@ public class Player extends Entity{
 
                     if (prospectivePlayerWorldX + hitboxOffsetX >= 0 &&
                             prospectivePlayerWorldX + hitboxOffsetX + hitbox.width <= map.mapWidth) {
-                        if (!map.isColliding(hitbox)) {
+                        if (Game.checkCollisions(hitbox)) {
                             x = prospectivePlayerWorldX; // Apply double movement
                         }
                     } else { // Clamp to map boundaries
