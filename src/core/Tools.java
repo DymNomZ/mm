@@ -34,7 +34,22 @@ public class Tools {
         return rand.nextInt(0, maxY);
     }
 
-    public static boolean isTouch(Entity e){
+    public static boolean isTouch(Entity e, Rectangle hitbox){
+
+        int pl = hitbox.x;
+        int pr = hitbox.x + hitbox.width;
+        int pt = hitbox.y;
+        int pb = hitbox.y + hitbox.height;
+
+        int il = (int)e.x;
+        int ir = (int)(e.x + e.ewidth);
+        int it = (int)e.y;
+        int ib = (int)(e.y + e.eheight);
+
+        return !(pl >= ir || pr <= il || pt >= ib || pb <= it);
+    }
+
+    public static boolean isWithinReach(Entity e){
 
         Player p = Game.player;
 

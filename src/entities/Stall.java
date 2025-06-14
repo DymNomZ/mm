@@ -34,7 +34,7 @@ public abstract class Stall extends Entity{
 
     public void handleChecks(){
 
-        if(Tools.isTouch(this)){
+        if(Tools.isWithinReach(this)){
 
             playerIsNear = true;
 

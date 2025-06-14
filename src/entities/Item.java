@@ -24,7 +24,7 @@ public class Item extends Entity {
 
     public void itemTouch(Player p){
 
-        if(keyHandler.ePressed && Tools.isTouch(this)){
+        if(keyHandler.ePressed && Tools.isWithinReach(this)){
             hide = true;
         }
     }

@@ -96,14 +96,18 @@ public class Game extends JPanel implements Runnable{
 
     public static boolean checkCollisions(Rectangle hitbox){
 
-        if(!mapConstructor.isColliding(hitbox)){
-            return true;
+        if(mapConstructor.isColliding(hitbox)){
+            return false;
         }
 
         //check stalls
+        for(Stall st : stalls){
+            if(Tools.isTouch(st, hitbox)){
+                return false;
+            }
+        }
 
-
-        return false;
+        return true;
 
     }
 
